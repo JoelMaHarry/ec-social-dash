@@ -3068,11 +3068,11 @@ function renderCal() {
 document.addEventListener('DOMContentLoaded', () => { renderCal(); });
 
 // Also render when navigating to calendar page
-const _origNavigate = navigate;
-function navigate(pageId) {
-  _origNavigate(pageId);
-  if (pageId === 'content-calendar') { setTimeout(renderCal, 50); }
-}
+// Render calendar when navigating to it
+document.addEventListener('click', function(e) {
+  const nav = e.target.closest('[data-page="content-calendar"]');
+  if (nav) { setTimeout(renderCal, 100); }
+});
 
 </script>
 </body>
