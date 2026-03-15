@@ -827,6 +827,22 @@
   .cat-industry  { background: #e76f51; }
   .cat-ngo       { background: #457b9d; }
   .cat-strategic { background: #FF8F22; }
+  .cal-form-input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--mist);
+    border-radius: 6px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--fog);
+    box-sizing: border-box;
+  }
+  .cal-form-input:focus {
+    outline: none;
+    border-color: var(--teal-lt);
+    background: #fff;
+  }
 
   .coming-soon {
     flex: 1;
@@ -1918,11 +1934,12 @@
       <div class="placeholder-page" style="padding:0 24px 24px;">
 
         <!-- Calendar Controls -->
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
           <button onclick="calNav(-1)" style="background:var(--purple);color:#fff;border:none;border-radius:6px;padding:6px 14px;cursor:pointer;font-family:var(--font-body);font-size:13px;">&#8592;</button>
           <span id="cal-month-label" style="font-family:var(--font-emph);font-size:18px;color:var(--teal-dk);min-width:180px;text-align:center;"></span>
           <button onclick="calNav(1)" style="background:var(--purple);color:#fff;border:none;border-radius:6px;padding:6px 14px;cursor:pointer;font-family:var(--font-body);font-size:13px;">&#8594;</button>
           <button onclick="calToday()" style="background:var(--orange);color:#fff;border:none;border-radius:6px;padding:6px 14px;cursor:pointer;font-family:var(--font-body);font-size:13px;margin-left:4px;">Today</button>
+          <button onclick="calOpenAdd()" style="background:var(--teal-lt);color:#fff;border:none;border-radius:6px;padding:6px 16px;cursor:pointer;font-family:var(--font-emph);font-size:13px;margin-left:4px;">+ Add Event</button>
           <!-- Filter buttons -->
           <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;">
             <button onclick="calFilter('all')" id="filter-all" class="cal-filter-btn active-filter">All</button>
@@ -1938,17 +1955,76 @@
         <div id="cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;"></div>
 
         <!-- Event Detail Panel -->
-        <div id="cal-detail" style="display:none;margin-top:16px;background:#fff;border:1px solid var(--mist);border-radius:10px;padding:20px;max-width:600px;">
+        <div id="cal-detail" style="display:none;margin-top:16px;background:#fff;border:1px solid var(--mist);border-radius:10px;padding:20px;max-width:640px;">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-            <div>
+            <div style="flex:1;">
               <div id="cal-detail-date" style="font-family:var(--font-emph);font-size:12px;color:var(--orange);text-transform:uppercase;margin-bottom:4px;"></div>
               <div id="cal-detail-title" style="font-family:var(--font-emph);font-size:18px;color:var(--teal-dk);margin-bottom:8px;"></div>
               <span id="cal-detail-cat" style="display:inline-block;font-size:11px;padding:3px 10px;border-radius:20px;color:#fff;margin-bottom:12px;"></span>
             </div>
-            <button onclick="document.getElementById('cal-detail').style.display='none'" style="background:none;border:none;cursor:pointer;font-size:18px;color:#999;">&#x2715;</button>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button id="cal-detail-edit-btn" onclick="calOpenEdit()" style="background:var(--teal-lt);color:#fff;border:none;border-radius:6px;padding:5px 12px;cursor:pointer;font-family:var(--font-body);font-size:12px;">Edit</button>
+              <button id="cal-detail-delete-btn" onclick="calDeleteEvent()" style="background:#e74c3c;color:#fff;border:none;border-radius:6px;padding:5px 12px;cursor:pointer;font-family:var(--font-body);font-size:12px;">Delete</button>
+              <button onclick="document.getElementById('cal-detail').style.display='none'" style="background:none;border:none;cursor:pointer;font-size:18px;color:#999;margin-left:4px;">&#x2715;</button>
+            </div>
           </div>
           <div id="cal-detail-angle" style="font-family:var(--font-body);font-size:14px;color:var(--ink);margin-bottom:8px;"></div>
           <div id="cal-detail-notes" style="font-family:var(--font-body);font-size:13px;color:#666;"></div>
+        </div>
+
+        <!-- Add / Edit Event Modal -->
+        <div id="cal-modal-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center;">
+          <div style="background:#fff;border-radius:12px;padding:28px;width:520px;max-width:95vw;box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+              <div id="cal-modal-title" style="font-family:var(--font-emph);font-size:18px;color:var(--teal-dk);">Add Event</div>
+              <button onclick="calCloseModal()" style="background:none;border:none;cursor:pointer;font-size:20px;color:#999;">&#x2715;</button>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div>
+                <label style="font-family:var(--font-emph);font-size:12px;color:var(--teal-dk);display:block;margin-bottom:4px;">MONTH</label>
+                <select id="cal-form-month" class="cal-form-input">
+                  <option value="1">January</option><option value="2">February</option><option value="3">March</option>
+                  <option value="4">April</option><option value="5">May</option><option value="6">June</option>
+                  <option value="7">July</option><option value="8">August</option><option value="9">September</option>
+                  <option value="10">October</option><option value="11">November</option><option value="12">December</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-family:var(--font-emph);font-size:12px;color:var(--teal-dk);display:block;margin-bottom:4px;">DAY</label>
+                <input id="cal-form-day" type="number" min="1" max="31" placeholder="e.g. 15" class="cal-form-input">
+              </div>
+              <div style="grid-column:1/-1;">
+                <label style="font-family:var(--font-emph);font-size:12px;color:var(--teal-dk);display:block;margin-bottom:4px;">EVENT / POST TITLE</label>
+                <input id="cal-form-title" type="text" placeholder="Event name" class="cal-form-input">
+              </div>
+              <div style="grid-column:1/-1;">
+                <label style="font-family:var(--font-emph);font-size:12px;color:var(--teal-dk);display:block;margin-bottom:4px;">CATEGORY</label>
+                <select id="cal-form-cat" class="cal-form-input">
+                  <option>Global Observance</option>
+                  <option>Policy Moment</option>
+                  <option>Energy Industry Event</option>
+                  <option>Development / NGO Event</option>
+                  <option>Strategic Window</option>
+                </select>
+              </div>
+              <div style="grid-column:1/-1;">
+                <label style="font-family:var(--font-emph);font-size:12px;color:var(--teal-dk);display:block;margin-bottom:4px;">STRATEGIC ANGLE</label>
+                <input id="cal-form-angle" type="text" placeholder="Strategic angle" class="cal-form-input">
+              </div>
+              <div style="grid-column:1/-1;">
+                <label style="font-family:var(--font-emph);font-size:12px;color:var(--teal-dk);display:block;margin-bottom:4px;">NOTES</label>
+                <input id="cal-form-notes" type="text" placeholder="Notes" class="cal-form-input">
+              </div>
+              <div style="grid-column:1/-1;display:flex;align-items:center;gap:8px;">
+                <input id="cal-form-vary" type="checkbox">
+                <label for="cal-form-vary" style="font-family:var(--font-body);font-size:13px;color:var(--ink);cursor:pointer;">Approximate date (varies by year)</label>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:20px;justify-content:flex-end;">
+              <button onclick="calCloseModal()" style="background:var(--fog);color:var(--ink);border:1px solid var(--mist);border-radius:6px;padding:8px 20px;cursor:pointer;font-family:var(--font-body);font-size:13px;">Cancel</button>
+              <button onclick="calSaveEvent()" style="background:var(--teal-dk);color:#fff;border:none;border-radius:6px;padding:8px 20px;cursor:pointer;font-family:var(--font-emph);font-size:13px;">Save Event</button>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -2955,6 +3031,115 @@ const DAY_NAMES   = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 let calYear = new Date().getFullYear();
 let calMonth = new Date().getMonth() + 1; // 1-based
 let calActiveFilter = 'all';
+let calEditingId = null; // null = adding new, number = editing existing
+
+// Load custom events from localStorage, merge with base events
+function calGetEvents() {
+  try {
+    const stored = localStorage.getItem('cal_custom_events');
+    const custom = stored ? JSON.parse(stored) : [];
+    // Base events get id = index, custom events get id = 'c_' + timestamp
+    const base = CAL_EVENTS.map((e, i) => Object.assign({}, e, { id: i, isCustom: false }));
+    return base.concat(custom);
+  } catch(e) { return CAL_EVENTS.map((e,i) => Object.assign({},e,{id:i,isCustom:false})); }
+}
+
+function calSaveCustomEvents(events) {
+  const custom = events.filter(e => e.isCustom);
+  localStorage.setItem('cal_custom_events', JSON.stringify(custom));
+}
+
+function calOpenAdd() {
+  calEditingId = null;
+  document.getElementById('cal-modal-title').textContent = 'Add Event';
+  document.getElementById('cal-form-month').value = calMonth;
+  document.getElementById('cal-form-day').value = '';
+  document.getElementById('cal-form-title').value = '';
+  document.getElementById('cal-form-cat').value = 'Global Observance';
+  document.getElementById('cal-form-angle').value = '';
+  document.getElementById('cal-form-notes').value = '';
+  document.getElementById('cal-form-vary').checked = false;
+  document.getElementById('cal-detail').style.display = 'none';
+  const overlay = document.getElementById('cal-modal-overlay');
+  overlay.style.display = 'flex';
+}
+
+function calOpenEdit() {
+  const events = calGetEvents();
+  const ev = events.find(e => e.id === calEditingId);
+  if (!ev) return;
+  document.getElementById('cal-modal-title').textContent = 'Edit Event';
+  document.getElementById('cal-form-month').value = ev.month;
+  document.getElementById('cal-form-day').value = ev.day;
+  document.getElementById('cal-form-title').value = ev.title;
+  document.getElementById('cal-form-cat').value = ev.category;
+  document.getElementById('cal-form-angle').value = ev.angle;
+  document.getElementById('cal-form-notes').value = ev.notes;
+  document.getElementById('cal-form-vary').checked = !!ev.vary;
+  document.getElementById('cal-detail').style.display = 'none';
+  const overlay = document.getElementById('cal-modal-overlay');
+  overlay.style.display = 'flex';
+}
+
+function calCloseModal() {
+  document.getElementById('cal-modal-overlay').style.display = 'none';
+}
+
+function calSaveEvent() {
+  const month = parseInt(document.getElementById('cal-form-month').value);
+  const day   = parseInt(document.getElementById('cal-form-day').value);
+  const title = document.getElementById('cal-form-title').value.trim();
+  const cat   = document.getElementById('cal-form-cat').value;
+  const angle = document.getElementById('cal-form-angle').value.trim();
+  const notes = document.getElementById('cal-form-notes').value.trim();
+  const vary  = document.getElementById('cal-form-vary').checked;
+
+  if (!title || !day || day < 1 || day > 31) {
+    alert('Please enter a valid title and day.');
+    return;
+  }
+
+  let allEvents = calGetEvents();
+
+  if (calEditingId !== null) {
+    // Editing existing
+    const idx = allEvents.findIndex(e => e.id === calEditingId);
+    if (idx !== -1) {
+      allEvents[idx] = { ...allEvents[idx], month, day, title, category: cat, angle, notes, vary };
+    }
+  } else {
+    // Adding new
+    const newEvent = { month, day, title, category: cat, angle, notes, vary, isCustom: true, id: 'c_' + Date.now() };
+    allEvents.push(newEvent);
+  }
+
+  calSaveCustomEvents(allEvents);
+  calCloseModal();
+  renderCal();
+}
+
+function calDeleteEvent() {
+  if (!confirm('Delete this event?')) return;
+  let allEvents = calGetEvents();
+  const ev = allEvents.find(e => e.id === calEditingId);
+  if (!ev) return;
+
+  if (ev.isCustom) {
+    // Remove custom event entirely
+    allEvents = allEvents.filter(e => e.id !== calEditingId);
+  } else {
+    // Mark base event as deleted in localStorage
+    try {
+      const deleted = JSON.parse(localStorage.getItem('cal_deleted_base') || '[]');
+      deleted.push(calEditingId);
+      localStorage.setItem('cal_deleted_base', JSON.stringify(deleted));
+    } catch(e) {}
+  }
+
+  calSaveCustomEvents(allEvents);
+  document.getElementById('cal-detail').style.display = 'none';
+  renderCal();
+}
 
 function calCatClass(cat) { return CAT_CLASS[cat] || "cat-strategic"; }
 
@@ -2981,6 +3166,7 @@ function calToday() {
 }
 
 function showCalDetail(ev) {
+  calEditingId = ev.id;
   const d = document.getElementById('cal-detail');
   document.getElementById('cal-detail-date').textContent = (ev.vary ? "~" : "") + MONTH_NAMES[ev.month-1] + " " + ev.day + ", " + calYear + (ev.vary ? " (approximate)" : "");
   document.getElementById('cal-detail-title').textContent = ev.title;
@@ -3016,7 +3202,13 @@ function renderCal() {
   const today = new Date();
 
   // Filter events for this month
-  const monthEvents = CAL_EVENTS.filter(e => {
+  // Get deleted base event ids
+  let deletedBase = [];
+  try { deletedBase = JSON.parse(localStorage.getItem('cal_deleted_base') || '[]'); } catch(e) {}
+
+  const allEvs = calGetEvents();
+  const monthEvents = allEvs.filter(e => {
+    if (deletedBase.includes(e.id)) return false;
     if (calActiveFilter !== 'all' && e.category !== calActiveFilter) return false;
     return e.month === calMonth;
   });
