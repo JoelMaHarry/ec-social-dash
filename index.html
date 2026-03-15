@@ -3033,20 +3033,48 @@ let calMonth = new Date().getMonth() + 1; // 1-based
 let calActiveFilter = 'all';
 let calEditingId = null; // null = adding new, number = editing existing
 
-// Load custom events from localStorage, merge with base events
-function calGetEvents() {
+// ── Calendar API (Netlify Blobs via Function) ──
+const CAL_API = '/.netlify/functions/calendar';
+let calAllEvents = null; // cached events
+
+async function calLoadEvents() {
   try {
-    const stored = localStorage.getItem('cal_custom_events');
-    const custom = stored ? JSON.parse(stored) : [];
-    // Base events get id = index, custom events get id = 'c_' + timestamp
-    const base = CAL_EVENTS.map((e, i) => Object.assign({}, e, { id: i, isCustom: false }));
-    return base.concat(custom);
-  } catch(e) { return CAL_EVENTS.map((e,i) => Object.assign({},e,{id:i,isCustom:false})); }
+    const res = await fetch(CAL_API);
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0) {
+      calAllEvents = data;
+    } else {
+      // First load — seed with base events
+      calAllEvents = CAL_EVENTS.map((e, i) => Object.assign({}, e, { id: i, isCustom: false }));
+      await calPersistEvents();
+    }
+  } catch(e) {
+    // Fallback to base events if function not available
+    calAllEvents = CAL_EVENTS.map((e, i) => Object.assign({}, e, { id: i, isCustom: false }));
+  }
+  renderCal();
+}
+
+async function calPersistEvents() {
+  try {
+    await fetch(CAL_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(calAllEvents)
+    });
+  } catch(e) { console.warn('Calendar save failed', e); }
+}
+
+function calGetEvents() {
+  if (!calAllEvents) {
+    calAllEvents = CAL_EVENTS.map((e, i) => Object.assign({}, e, { id: i, isCustom: false }));
+  }
+  return calAllEvents;
 }
 
 function calSaveCustomEvents(events) {
-  const custom = events.filter(e => e.isCustom);
-  localStorage.setItem('cal_custom_events', JSON.stringify(custom));
+  calAllEvents = events;
+  calPersistEvents();
 }
 
 function calOpenAdd() {
@@ -3121,21 +3149,7 @@ function calSaveEvent() {
 function calDeleteEvent() {
   if (!confirm('Delete this event?')) return;
   let allEvents = calGetEvents();
-  const ev = allEvents.find(e => e.id === calEditingId);
-  if (!ev) return;
-
-  if (ev.isCustom) {
-    // Remove custom event entirely
-    allEvents = allEvents.filter(e => e.id !== calEditingId);
-  } else {
-    // Mark base event as deleted in localStorage
-    try {
-      const deleted = JSON.parse(localStorage.getItem('cal_deleted_base') || '[]');
-      deleted.push(calEditingId);
-      localStorage.setItem('cal_deleted_base', JSON.stringify(deleted));
-    } catch(e) {}
-  }
-
+  allEvents = allEvents.filter(e => e.id !== calEditingId);
   calSaveCustomEvents(allEvents);
   document.getElementById('cal-detail').style.display = 'none';
   renderCal();
@@ -3202,13 +3216,8 @@ function renderCal() {
   const today = new Date();
 
   // Filter events for this month
-  // Get deleted base event ids
-  let deletedBase = [];
-  try { deletedBase = JSON.parse(localStorage.getItem('cal_deleted_base') || '[]'); } catch(e) {}
-
   const allEvs = calGetEvents();
   const monthEvents = allEvs.filter(e => {
-    if (deletedBase.includes(e.id)) return false;
     if (calActiveFilter !== 'all' && e.category !== calActiveFilter) return false;
     return e.month === calMonth;
   });
@@ -3257,7 +3266,7 @@ function renderCal() {
 }
 
 // Init calendar when page loads
-document.addEventListener('DOMContentLoaded', () => { renderCal(); });
+document.addEventListener('DOMContentLoaded', () => { calLoadEvents(); });
 
 // Also render when navigating to calendar page
 // Render calendar when navigating to it
