@@ -752,6 +752,82 @@
     min-height: 600px;
   }
 
+
+  /* ── CONTENT CALENDAR ── */
+  .cal-day-header {
+    background: var(--purple);
+    color: #fff;
+    font-family: var(--font-emph);
+    font-size: 11px;
+    text-align: center;
+    padding: 8px 4px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+  }
+  .cal-day {
+    background: #fff;
+    border: 1px solid var(--mist);
+    border-radius: 6px;
+    min-height: 90px;
+    padding: 6px;
+    position: relative;
+    vertical-align: top;
+  }
+  .cal-day.today { border-color: var(--orange); border-width: 2px; }
+  .cal-day.other-month { background: var(--fog); opacity: 0.5; }
+  .cal-day-num {
+    font-family: var(--font-emph);
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 4px;
+  }
+  .cal-day.today .cal-day-num { color: var(--orange); font-size: 13px; }
+  .cal-event {
+    font-family: var(--font-body);
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-bottom: 2px;
+    cursor: pointer;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+  }
+  .cal-event:hover { opacity: 0.85; }
+  .cal-event-var {
+    font-family: var(--font-body);
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-bottom: 2px;
+    cursor: pointer;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+    border-left: 3px solid rgba(255,255,255,0.6);
+  }
+  .cal-filter-btn {
+    background: var(--fog);
+    border: 1px solid var(--mist);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--ink);
+  }
+  .cal-filter-btn:hover { background: var(--mist); }
+  .cal-filter-btn.active-filter { background: var(--teal-dk); color: #fff; border-color: var(--teal-dk); }
+  .cat-global    { background: #2a9d8f; }
+  .cat-policy    { background: #3C3F74; }
+  .cat-industry  { background: #e76f51; }
+  .cat-ngo       { background: #457b9d; }
+  .cat-strategic { background: #FF8F22; }
+
   .coming-soon {
     flex: 1;
     display: flex;
@@ -1837,10 +1913,44 @@
       <div class="page-header">
         <div class="page-header-eyebrow">Intelligence</div>
         <h1 class="page-header-title">Content Calendar</h1>
-        <p class="page-header-desc">Live month-by-month view of planned content. Populated from the EC Content Calendar and updated automatically.</p>
+        <p class="page-header-desc">Year-round content events, observances, and strategic moments.</p>
       </div>
-      <div class="placeholder-page">
-        <iframe class="sheet-embed" src="https://calendar.google.com/calendar/embed?src=c_5d5ae908952c9f19307339ad9c318a05c2d13bd61e658d46aee37efa7149af8f%40group.calendar.google.com&ctz=America%2FLos_Angeles&mode=MONTH&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=0&showCalendars=0&showTz=0" title="Content Calendar" style="border:none;"></iframe>
+      <div class="placeholder-page" style="padding:0 24px 24px;">
+
+        <!-- Calendar Controls -->
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <button onclick="calNav(-1)" style="background:var(--purple);color:#fff;border:none;border-radius:6px;padding:6px 14px;cursor:pointer;font-family:var(--font-body);font-size:13px;">&#8592;</button>
+          <span id="cal-month-label" style="font-family:var(--font-emph);font-size:18px;color:var(--teal-dk);min-width:180px;text-align:center;"></span>
+          <button onclick="calNav(1)" style="background:var(--purple);color:#fff;border:none;border-radius:6px;padding:6px 14px;cursor:pointer;font-family:var(--font-body);font-size:13px;">&#8594;</button>
+          <button onclick="calToday()" style="background:var(--orange);color:#fff;border:none;border-radius:6px;padding:6px 14px;cursor:pointer;font-family:var(--font-body);font-size:13px;margin-left:4px;">Today</button>
+          <!-- Filter buttons -->
+          <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;">
+            <button onclick="calFilter('all')" id="filter-all" class="cal-filter-btn active-filter">All</button>
+            <button onclick="calFilter('Global Observance')" id="filter-Global Observance" class="cal-filter-btn">Global Observance</button>
+            <button onclick="calFilter('Policy Moment')" id="filter-Policy Moment" class="cal-filter-btn">Policy Moment</button>
+            <button onclick="calFilter('Energy Industry Event')" id="filter-Energy Industry Event" class="cal-filter-btn">Industry Event</button>
+            <button onclick="calFilter('Development / NGO Event')" id="filter-Development / NGO Event" class="cal-filter-btn">NGO Event</button>
+            <button onclick="calFilter('Strategic Window')" id="filter-Strategic Window" class="cal-filter-btn">Strategic Window</button>
+          </div>
+        </div>
+
+        <!-- Calendar Grid -->
+        <div id="cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;"></div>
+
+        <!-- Event Detail Panel -->
+        <div id="cal-detail" style="display:none;margin-top:16px;background:#fff;border:1px solid var(--mist);border-radius:10px;padding:20px;max-width:600px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div>
+              <div id="cal-detail-date" style="font-family:var(--font-emph);font-size:12px;color:var(--orange);text-transform:uppercase;margin-bottom:4px;"></div>
+              <div id="cal-detail-title" style="font-family:var(--font-emph);font-size:18px;color:var(--teal-dk);margin-bottom:8px;"></div>
+              <span id="cal-detail-cat" style="display:inline-block;font-size:11px;padding:3px 10px;border-radius:20px;color:#fff;margin-bottom:12px;"></span>
+            </div>
+            <button onclick="document.getElementById('cal-detail').style.display='none'" style="background:none;border:none;cursor:pointer;font-size:18px;color:#999;">&#x2715;</button>
+          </div>
+          <div id="cal-detail-angle" style="font-family:var(--font-body);font-size:14px;color:var(--ink);margin-bottom:8px;"></div>
+          <div id="cal-detail-notes" style="font-family:var(--font-body);font-size:13px;color:#666;"></div>
+        </div>
+
       </div>
     </div>
 
@@ -2792,6 +2902,178 @@ document.getElementById('met-imp').textContent = '321K';
 document.getElementById('met-eng').textContent = '7.3%';
 document.getElementById('met-fol').textContent = '820';
 document.getElementById('met-clk') && (document.getElementById('met-clk').textContent = '205');
+
+// ── CONTENT CALENDAR ──
+const CAL_EVENTS = [
+  { month: 1,  day: 1,   vary: false, title: "New Year Development Outlook",               category: "Strategic Window",       angle: "Frame global energy access priorities for the year",        notes: "Annual reflection post" },
+  { month: 1,  day: 21,  vary: true,  title: "World Economic Forum Davos",                 category: "Policy Moment",           angle: "Energy development and global policy conversation",          notes: "Major policy gathering (Jan 21–24)" },
+  { month: 1,  day: 26,  vary: false, title: "International Day of Clean Energy",          category: "Global Observance",       angle: "Highlight solutions to global energy poverty",               notes: "UN observance" },
+  { month: 2,  day: 4,   vary: true,  title: "Africa Energy Indaba",                       category: "Energy Industry Event",   angle: "Spotlight African energy investment and development",         notes: "Cape Town (Feb 4–6)" },
+  { month: 2,  day: 15,  vary: true,  title: "IEA Global Energy Review Release",           category: "Policy Moment",           angle: "Use data insights on global energy trends",                  notes: "Major IEA report" },
+  { month: 3,  day: 1,   vary: false, title: "World Energy Day",                           category: "Global Observance",       angle: "Promote energy access mission",                              notes: "Industry awareness day" },
+  { month: 3,  day: 8,   vary: false, title: "International Women's Day",                  category: "Global Observance",       angle: "Women and energy access empowerment",                        notes: "Narrative opportunity" },
+  { month: 3,  day: 14,  vary: true,  title: "Wildcatter's Weekend",                       category: "Energy Industry Event",   angle: "Engage traditional energy leadership",                       notes: "Industry networking" },
+  { month: 3,  day: 23,  vary: true,  title: "CERAWeek",                                   category: "Energy Industry Event",   angle: "Energy transition and development discussion",               notes: "Houston (Mar 23–27)" },
+  { month: 3,  day: 28,  vary: true,  title: "Earth Hour",                                 category: "Global Observance",       angle: "Energy efficiency awareness",                                notes: "WWF campaign" },
+  { month: 4,  day: 7,   vary: false, title: "World Health Day",                           category: "Global Observance",       angle: "Energy access and health outcomes",                          notes: "Indoor air pollution link" },
+  { month: 4,  day: 22,  vary: false, title: "Earth Day",                                  category: "Global Observance",       angle: "Energy development as climate solution",                     notes: "Major global engagement day" },
+  { month: 4,  day: 21,  vary: true,  title: "World Bank Spring Meetings",                 category: "Policy Moment",           angle: "Energy investment and development financing",                 notes: "Washington DC" },
+  { month: 5,  day: 3,   vary: false, title: "World Press Freedom Day",                    category: "Global Observance",       angle: "Transparency and information access",                        notes: "UN observance" },
+  { month: 5,  day: 5,   vary: true,  title: "Offshore Technology Conference",             category: "Energy Industry Event",   angle: "Energy innovation and technology",                           notes: "Houston" },
+  { month: 5,  day: 19,  vary: true,  title: "Africa Energy Forum",                        category: "Energy Industry Event",   angle: "Energy investment and development",                          notes: "Africa-focused energy event" },
+  { month: 6,  day: 5,   vary: false, title: "World Environment Day",                      category: "Global Observance",       angle: "Sustainability and energy development narrative",             notes: "UN observance" },
+  { month: 6,  day: 15,  vary: false, title: "Global Wind Day",                            category: "Global Observance",       angle: "Clean energy spotlight",                                     notes: "Industry awareness" },
+  { month: 6,  day: 23,  vary: true,  title: "Sustainable Energy for All Global Forum",    category: "Development / NGO Event", angle: "Highlight partnerships and initiatives",                      notes: "Energy access community" },
+  { month: 7,  day: 11,  vary: false, title: "World Population Day",                       category: "Global Observance",       angle: "Energy demand and population growth link",                   notes: "UN observance" },
+  { month: 7,  day: 14,  vary: true,  title: "UN High-Level Political Forum",              category: "Policy Moment",           angle: "SDG7 energy access discussion",                              notes: "UN policy forum" },
+  { month: 8,  day: 12,  vary: false, title: "International Youth Day",                    category: "Global Observance",       angle: "Youth leadership in energy access",                          notes: "UN observance" },
+  { month: 9,  day: 7,   vary: false, title: "Clean Air Day",                              category: "Global Observance",       angle: "Energy access reduces pollution",                            notes: "Air quality link" },
+  { month: 9,  day: 16,  vary: true,  title: "UN General Assembly Week",                   category: "Policy Moment",           angle: "Energy access diplomacy and policy discussion",               notes: "NYC" },
+  { month: 9,  day: 22,  vary: true,  title: "Climate Week NYC",                           category: "Energy Industry Event",   angle: "Energy transition and development",                          notes: "Major media attention" },
+  { month: 10, day: 7,   vary: true,  title: "Energy Efficiency Day",                      category: "Global Observance",       angle: "Efficiency as energy solution",                              notes: "Industry awareness" },
+  { month: 10, day: 16,  vary: false, title: "World Food Day",                             category: "Global Observance",       angle: "Energy and food systems link",                               notes: "FAO observance" },
+  { month: 10, day: 21,  vary: true,  title: "ADIPEC",                                     category: "Energy Industry Event",   angle: "Global energy investment conversation",                      notes: "Abu Dhabi" },
+  { month: 10, day: 14,  vary: true,  title: "World Bank Annual Meetings",                 category: "Policy Moment",           angle: "Energy access funding conversation",                         notes: "Washington DC" },
+  { month: 11, day: 10,  vary: true,  title: "COP Climate Conference",                     category: "Policy Moment",           angle: "Energy transition and development debate",                   notes: "Major climate summit" },
+  { month: 11, day: 17,  vary: true,  title: "Africa Energy Week",                         category: "Energy Industry Event",   angle: "Energy investment in Africa",                                notes: "Cape Town" },
+  { month: 12, day: 10,  vary: false, title: "Human Rights Day",                           category: "Global Observance",       angle: "Energy access as development right",                         notes: "UN observance" },
+  { month: 12, day: 14,  vary: false, title: "World Energy Conservation Day",              category: "Global Observance",       angle: "Energy efficiency messaging",                                notes: "Annual observance" },
+  { month: 12, day: 20,  vary: true,  title: "IEA World Energy Outlook Release",           category: "Policy Moment",           angle: "Major global energy outlook report",                         notes: "IEA publication" },
+];
+
+const CAT_CLASS = {
+  "Global Observance":       "cat-global",
+  "Policy Moment":           "cat-policy",
+  "Energy Industry Event":   "cat-industry",
+  "Development / NGO Event": "cat-ngo",
+  "Strategic Window":        "cat-strategic"
+};
+
+const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const DAY_NAMES   = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth() + 1; // 1-based
+let calActiveFilter = 'all';
+
+function calCatClass(cat) { return CAT_CLASS[cat] || "cat-strategic"; }
+
+function calFilter(cat) {
+  calActiveFilter = cat;
+  document.querySelectorAll('.cal-filter-btn').forEach(b => b.classList.remove('active-filter'));
+  const id = cat === 'all' ? 'filter-all' : 'filter-' + cat;
+  const btn = document.getElementById(id);
+  if (btn) btn.classList.add('active-filter');
+  renderCal();
+}
+
+function calNav(dir) { 
+  calMonth += dir; 
+  if (calMonth > 12) { calMonth = 1; calYear++; }
+  if (calMonth < 1)  { calMonth = 12; calYear--; }
+  renderCal(); 
+}
+
+function calToday() { 
+  calMonth = new Date().getMonth() + 1; 
+  calYear = new Date().getFullYear(); 
+  renderCal(); 
+}
+
+function showCalDetail(ev) {
+  const d = document.getElementById('cal-detail');
+  document.getElementById('cal-detail-date').textContent = (ev.vary ? "~" : "") + MONTH_NAMES[ev.month-1] + " " + ev.day + ", " + calYear + (ev.vary ? " (approximate)" : "");
+  document.getElementById('cal-detail-title').textContent = ev.title;
+  const catEl = document.getElementById('cal-detail-cat');
+  catEl.textContent = ev.category;
+  catEl.className = '';
+  catEl.style.cssText = 'display:inline-block;font-size:11px;padding:3px 10px;border-radius:20px;color:#fff;margin-bottom:12px;';
+  catEl.classList.add(calCatClass(ev.category));
+  document.getElementById('cal-detail-angle').innerHTML = '<strong>Strategic Angle:</strong> ' + ev.angle;
+  document.getElementById('cal-detail-notes').innerHTML = '<strong>Notes:</strong> ' + ev.notes;
+  d.style.display = 'block';
+}
+
+function renderCal() {
+  const label = document.getElementById('cal-month-label');
+  if (!label) return;
+  label.textContent = MONTH_NAMES[calMonth-1] + ' ' + calYear;
+
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+
+  // Day headers
+  DAY_NAMES.forEach(d => {
+    const h = document.createElement('div');
+    h.className = 'cal-day-header';
+    h.textContent = d;
+    grid.appendChild(h);
+  });
+
+  const firstDay = new Date(calYear, calMonth-1, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth, 0).getDate();
+  const daysInPrev  = new Date(calYear, calMonth-1, 0).getDate();
+  const today = new Date();
+
+  // Filter events for this month
+  const monthEvents = CAL_EVENTS.filter(e => {
+    if (calActiveFilter !== 'all' && e.category !== calActiveFilter) return false;
+    return e.month === calMonth;
+  });
+
+  // Build day cells
+  const totalCells = Math.ceil((firstDay + daysInMonth) / 7) * 7;
+  for (let i = 0; i < totalCells; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cal-day';
+    let dayNum, isCurrentMonth = true;
+
+    if (i < firstDay) {
+      dayNum = daysInPrev - firstDay + i + 1;
+      isCurrentMonth = false;
+      cell.classList.add('other-month');
+    } else if (i >= firstDay + daysInMonth) {
+      dayNum = i - firstDay - daysInMonth + 1;
+      isCurrentMonth = false;
+      cell.classList.add('other-month');
+    } else {
+      dayNum = i - firstDay + 1;
+      if (dayNum === today.getDate() && calMonth === today.getMonth()+1 && calYear === today.getFullYear()) {
+        cell.classList.add('today');
+      }
+    }
+
+    const numEl = document.createElement('div');
+    numEl.className = 'cal-day-num';
+    numEl.textContent = dayNum;
+    cell.appendChild(numEl);
+
+    if (isCurrentMonth) {
+      monthEvents.filter(e => e.day === dayNum).forEach(ev => {
+        const evEl = document.createElement('div');
+        evEl.className = 'cal-event ' + calCatClass(ev.category);
+        if (ev.vary) evEl.classList.add('cal-event-var');
+        evEl.textContent = ev.title;
+        evEl.title = ev.title;
+        evEl.onclick = () => showCalDetail(ev);
+        cell.appendChild(evEl);
+      });
+    }
+
+    grid.appendChild(cell);
+  }
+}
+
+// Init calendar when page loads
+document.addEventListener('DOMContentLoaded', () => { renderCal(); });
+
+// Also render when navigating to calendar page
+const _origNavigate = navigate;
+function navigate(pageId) {
+  _origNavigate(pageId);
+  if (pageId === 'content-calendar') { setTimeout(renderCal, 50); }
+}
+
 </script>
 </body>
 </html>
