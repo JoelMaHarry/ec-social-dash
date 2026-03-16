@@ -2278,12 +2278,12 @@ function filterAccounts(rel, btn) {
 // ══════════════════════════════════════════════════════════
 
 function startScan(mode) {
-  const targets = MONITOR_SOURCES.filter(s => s.url && (mode === 'full' || s.quick));
+  var targets = MONITOR_SOURCES.filter(function(s) { return s.url && (mode === 'full' || s.quick); });
 
-  const panel     = document.getElementById('scan-panel');
-  const results   = document.getElementById('scan-results');
-  const progress  = document.getElementById('scan-progress');
-  const timestamp = document.getElementById('scan-timestamp');
+  var panel     = document.getElementById('scan-panel');
+  var results   = document.getElementById('scan-results');
+  var progress  = document.getElementById('scan-progress');
+  var timestamp = document.getElementById('scan-timestamp');
 
   panel.style.display = '';
   progress.style.display = 'none';
@@ -2294,12 +2294,12 @@ function startScan(mode) {
     return;
   }
 
-  // ── Open tabs synchronously (must happen in direct click handler, no async) ──
-  let opened = 0;
-  let blocked = false;
+  // Open tabs synchronously in direct click handler
+  var opened = 0;
+  var blocked = false;
 
-  targets.forEach((s) => {
-    const win = window.open(s.url, '_blank');
+  targets.forEach(function(s) {
+    var win = window.open(s.url, '_blank');
     if (!win || win.closed || typeof win.closed === 'undefined') {
       blocked = true;
     } else {
@@ -2307,50 +2307,54 @@ function startScan(mode) {
     }
   });
 
-  // ── Group targets by category for the status panel ──
-  const byRel = {};
-  targets.forEach(s => {
+  // Group by relationship category
+  var byRel = {};
+  targets.forEach(function(s) {
     if (!byRel[s.rel]) byRel[s.rel] = [];
     byRel[s.rel].push(s);
   });
 
-  const groupHTML = Object.entries(byRel).map(([rel, sources]) => `
-    <div style="margin-bottom:var(--sp-md);">
-      <div style="font-family:var(--font-emph);font-size:0.72rem;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">${rel}</div>
-      ${sources.map(s => `
-        <div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid var(--mist);">
-          <span style="font-size:0.82rem;color:var(--ink);flex:1;">${s.name}</span>
-          <a href="${s.url}" target="_blank" style="font-size:0.75rem;color:var(--teal-lt);text-decoration:none;font-family:var(--font-body);white-space:nowrap;">Open →</a>
-        </div>`).join('')}
-    </div>`).join('');
+  var groupHTML = '';
+  Object.keys(byRel).forEach(function(rel) {
+    var sources = byRel[rel];
+    var rowsHTML = '';
+    sources.forEach(function(s) {
+      rowsHTML += '<div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid var(--mist);">'
+        + '<span style="font-size:0.82rem;color:var(--ink);flex:1;">' + s.name + '</span>'
+        + '<a href="' + s.url + '" target="_blank" style="font-size:0.75rem;color:var(--teal-lt);text-decoration:none;font-family:var(--font-body);white-space:nowrap;">Open \u2192</a>'
+        + '</div>';
+    });
+    groupHTML += '<div style="margin-bottom:var(--sp-md);">'
+      + '<div style="font-family:var(--font-emph);font-size:0.72rem;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">' + rel + '</div>'
+      + rowsHTML
+      + '</div>';
+  });
+
+  var modeLabel = mode === 'quick' ? '\u26a1 Quick Scan' : '\u25b6 Full Scan';
+  var dateLabel = new Date().toLocaleDateString('en-US', {month:'short', day:'numeric'});
 
   if (blocked || opened === 0) {
-    results.innerHTML = \`
-      <div style="background:#fff8f0;border:1px solid var(--orange);border-radius:6px;padding:var(--sp-md);margin-bottom:var(--sp-md);">
-        <strong style="font-family:var(--font-emph);color:var(--orange);font-size:0.85rem;">⚠ Popups blocked</strong>
-        <div style="font-size:0.8rem;color:var(--ink);margin-top:4px;">Allow popups for <strong>ec-social-dash.netlify.app</strong> in your browser settings, then click again. Or use the links below to open each source manually.</div>
-      </div>
-      <div style="font-family:var(--font-emph);font-size:0.8rem;color:var(--teal-dk);margin-bottom:var(--sp-sm);">
-        \${mode === 'quick' ? '⚡ Quick Scan' : '▶ Full Scan'} — \${targets.length} sources
-      </div>
-      \${groupHTML}\`;
+    results.innerHTML = '<div style="background:#fff8f0;border:1px solid var(--orange);border-radius:6px;padding:var(--sp-md);margin-bottom:var(--sp-md);">'
+      + '<strong style="font-family:var(--font-emph);color:var(--orange);font-size:0.85rem;">\u26a0 Popups blocked</strong>'
+      + '<div style="font-size:0.8rem;color:var(--ink);margin-top:4px;">Allow popups for <strong>ec-social-dash.netlify.app</strong> in your browser settings, then click again. Or use the links below to open each source manually.</div>'
+      + '</div>'
+      + '<div style="font-family:var(--font-emph);font-size:0.8rem;color:var(--teal-dk);margin-bottom:var(--sp-sm);">' + modeLabel + ' \u2014 ' + targets.length + ' sources</div>'
+      + groupHTML;
   } else {
-    results.innerHTML = \`
-      <div style="background:#f0faf8;border:1px solid var(--teal-lt);border-radius:6px;padding:var(--sp-md);margin-bottom:var(--sp-md);">
-        <strong style="font-family:var(--font-emph);color:var(--teal-dk);font-size:0.85rem;">✓ Opening \${opened} monitoring source\${opened !== 1 ? 's' : ''}…</strong>
-        <div style="font-size:0.8rem;color:var(--gray-400);margin-top:2px;">Review each tab, then return here. Use the links below to re-open any that didn't load.</div>
-      </div>
-      <div style="font-family:var(--font-emph);font-size:0.8rem;color:var(--teal-dk);margin-bottom:var(--sp-sm);">
-        \${mode === 'quick' ? '⚡ Quick Scan' : '▶ Full Scan'} — \${targets.length} sources · \${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'})}
-      </div>
-      \${groupHTML}\`;
+    var plural = opened !== 1 ? 's' : '';
+    results.innerHTML = '<div style="background:#f0faf8;border:1px solid var(--teal-lt);border-radius:6px;padding:var(--sp-md);margin-bottom:var(--sp-md);">'
+      + '<strong style="font-family:var(--font-emph);color:var(--teal-dk);font-size:0.85rem;">\u2713 Opening ' + opened + ' monitoring source' + plural + '\u2026</strong>'
+      + '<div style="font-size:0.8rem;color:var(--gray-400);margin-top:2px;">Review each tab, then return here. Use the links below to re-open any that did not load.</div>'
+      + '</div>'
+      + '<div style="font-family:var(--font-emph);font-size:0.8rem;color:var(--teal-dk);margin-bottom:var(--sp-sm);">' + modeLabel + ' \u2014 ' + targets.length + ' sources \u00b7 ' + dateLabel + '</div>'
+      + groupHTML;
 
-    // Mark opened accounts as checked today
-    const today = todayStr();
-    const allLogs = getLogs();
-    const now = new Date();
-    targets.forEach(s => {
-      if (!allLogs.find(l => l.accountId === s.id && l.date === today)) {
+    // Mark accounts as checked today
+    var today = todayStr();
+    var allLogs = getLogs();
+    var now = new Date();
+    targets.forEach(function(s) {
+      if (!allLogs.find(function(l) { return l.accountId === s.id && l.date === today; })) {
         allLogs.push({ id:'log_scan_'+s.id, accountId:s.id, date:today, time:now.toTimeString().slice(0,5), status:'checked', notes: mode === 'quick' ? 'Quick scan' : 'Full scan' });
       }
     });
