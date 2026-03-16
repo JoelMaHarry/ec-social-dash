@@ -1303,10 +1303,13 @@
 
     <!-- ══ IDEATION ══ -->
     <div class="page" id="page-ideation">
-      <div class="page-header">
-        <div class="page-header-eyebrow">Content Workflow</div>
-        <h1 class="page-header-title">Ideation <em>/ Storehouse</em></h1>
-        <p class="page-header-desc">EC creative assets, post concepts, photos, graphics, and final posts — live from Google Drive.</p>
+      <div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:var(--sp-md);">
+        <div>
+          <div class="page-header-eyebrow">Content Workflow</div>
+          <h1 class="page-header-title">Ideation <em>/ Storehouse</em></h1>
+          <p class="page-header-desc">EC creative assets, post concepts, photos, graphics, and final posts — live from Google Drive.</p>
+        </div>
+        <a href="https://drive.google.com/drive/folders/1UZ0r3ohAd7bCrCv9Mz0xaYBEAFgiW9RI?usp=sharing" target="_blank" style="background:var(--teal-dk);color:white;border:none;border-radius:var(--r-md);padding:8px 16px;font-size:0.82rem;font-family:var(--font-body);font-weight:600;text-decoration:none;flex-shrink:0;margin-top:4px;">Open in Drive →</a>
       </div>
 
       <!-- Ideation Tab Bar -->
@@ -1319,22 +1322,16 @@
       <!-- TAB: ASSETS (Google Drive embed) -->
       <div class="idea-panel active" id="idea-assets">
         <div style="background:var(--fog);border-bottom:1px solid var(--mist);padding:12px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-shrink:0;">
-          <div style="font-size:0.8rem;color: var(--gray-500);">
-            <strong style="color:var(--ink);">Google Drive</strong> — your live asset library. Images, logos, fonts, video, audio.
+          <div style="font-size:0.8rem;color:var(--gray-500);">
+            <strong style="color:var(--ink);">!EC Ideation</strong> — assets, post concepts, photos, graphics, and final posts.
+            <span style="margin-left:8px;font-size:0.75rem;color:var(--gray-400);">If the folder is blank, sign into Google Drive in another tab first.</span>
           </div>
           <div style="display:flex;gap:8px;align-items:center;">
-            <input id="drive-url-input" type="text" value="https://drive.google.com/drive/folders/1UZ0r3ohAd7bCrCv9Mz0xaYBEAFgiW9RI?usp=sharing" placeholder="Paste Google Drive folder URL…" style="font-size:0.78rem;padding:6px 12px;border:1px solid var(--mist);border-radius:4px;width:320px;font-family: var(--font-body);color:var(--ink);">
-            <button onclick="setDriveUrl()" style="background:var(--teal);color:var(--white);border:none;padding:6px 14px;border-radius:4px;font-size:0.78rem;cursor:pointer;font-weight:600;">Load</button>
+            <a href="https://drive.google.com/drive/folders/1UZ0r3ohAd7bCrCv9Mz0xaYBEAFgiW9RI?usp=sharing" target="_blank" style="font-size:0.75rem;color:var(--teal-lt);font-family:var(--font-body);font-weight:600;text-decoration:none;white-space:nowrap;">Open in Drive →</a>
           </div>
         </div>
         <div style="flex:1;position:relative;" id="drive-embed-wrap">
-          <div id="drive-placeholder" style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;padding:60px;color:#a0aec0;min-height:400px;">
-            <svg width="56" height="56" viewBox="0 0 56 56" fill="none"><path d="M8 42L20 20l8 14 8-10 12 18H8z" fill="#e2e8f0"/><circle cx="38" cy="16" r="8" fill="#e2e8f0"/></svg>
-            <div style="font-family:var(--font-sub);font-size:1.3rem;color: var(--gray-500);">Connect your Drive folder</div>
-            <div style="font-size:0.82rem;text-align:center;max-width:340px;line-height:1.6;">Paste a Google Drive folder URL above to embed your asset library — images, logos, fonts, video clips, and audio files.</div>
-            <div style="font-size:0.75rem;color:#b0bec5;text-align:center;max-width:300px;line-height:1.5;">Tip: Make sure the folder is shared with "Anyone with the link can view" so all team members can access it.</div>
-          </div>
-          <iframe id="drive-iframe" style="display:none;width:100%;height:100%;min-height:600px;border:none;" allowfullscreen></iframe>
+          <iframe id="drive-iframe" src="https://drive.google.com/embeddedfolderview?id=1UZ0r3ohAd7bCrCv9Mz0xaYBEAFgiW9RI#list" style="width:100%;height:calc(100vh - 280px);min-height:500px;border:none;" allowfullscreen></iframe>
         </div>
       </div>
 
