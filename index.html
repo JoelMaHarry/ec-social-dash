@@ -1306,7 +1306,7 @@
       <div class="page-header">
         <div class="page-header-eyebrow">Content Workflow</div>
         <h1 class="page-header-title">Ideation <em>/ Storehouse</em></h1>
-        <p class="page-header-desc">Assets, inspiration, and draft ideas — all in one place.</p>
+        <p class="page-header-desc">EC creative assets, post concepts, photos, graphics, and final posts — live from Google Drive.</p>
       </div>
 
       <!-- Ideation Tab Bar -->
@@ -1323,7 +1323,7 @@
             <strong style="color:var(--ink);">Google Drive</strong> — your live asset library. Images, logos, fonts, video, audio.
           </div>
           <div style="display:flex;gap:8px;align-items:center;">
-            <input id="drive-url-input" type="text" placeholder="Paste Google Drive folder URL…" style="font-size:0.78rem;padding:6px 12px;border:1px solid var(--mist);border-radius:4px;width:320px;font-family: var(--font-body);color:var(--ink);">
+            <input id="drive-url-input" type="text" value="https://drive.google.com/drive/folders/1UZ0r3ohAd7bCrCv9Mz0xaYBEAFgiW9RI?usp=sharing" placeholder="Paste Google Drive folder URL…" style="font-size:0.78rem;padding:6px 12px;border:1px solid var(--mist);border-radius:4px;width:320px;font-family: var(--font-body);color:var(--ink);">
             <button onclick="setDriveUrl()" style="background:var(--teal);color:var(--white);border:none;padding:6px 14px;border-radius:4px;font-size:0.78rem;cursor:pointer;font-weight:600;">Load</button>
           </div>
         </div>
@@ -2952,12 +2952,11 @@ function escHtml(str) {
 
 // Init Ideation on load
 (function initIdeation() {
-  const savedDrive = localStorage.getItem(DRIVE_KEY);
-  if (savedDrive) {
-    const inp = document.getElementById('drive-url-input');
-    if (inp) inp.value = savedDrive;
-    loadDriveEmbed(savedDrive);
-  }
+  var EC_IDEATION_DEFAULT = 'https://drive.google.com/embeddedfolderview?id=1UZ0r3ohAd7bCrCv9Mz0xaYBEAFgiW9RI#list';
+  var savedDrive = localStorage.getItem(DRIVE_KEY) || EC_IDEATION_DEFAULT;
+  var inp = document.getElementById('drive-url-input');
+  if (inp && !inp.value) inp.value = 'https://drive.google.com/drive/folders/1UZ0r3ohAd7bCrCv9Mz0xaYBEAFgiW9RI?usp=sharing';
+  loadDriveEmbed(savedDrive);
   renderInspirationGrid('all');
   renderDraftsGrid();
 })();
