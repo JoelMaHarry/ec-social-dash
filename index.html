@@ -2161,27 +2161,39 @@ function toast(msg) {
 }
 
 // ── MONITOR DAILY ACCOUNTS ──
-const ACCOUNTS = [
-  { id:'bhlf', name:'Bettering Human Lives Foundation', rel:'Grantee', linkedin:'https://www.linkedin.com/company/bettering-human-lives-foundation/posts/?feedView=all' },
-  { id:'eed',  name:'EED Research Institute', rel:'Grantee', linkedin:'https://www.linkedin.com/company/eed-research-institute/' },
-  { id:'gig',  name:'Gigawatt Impact', rel:'Grantee', linkedin:null },
-  { id:'iea',  name:'IEA Ghana', rel:'Grantee', linkedin:'https://www.linkedin.com/company/iea-ghana/' },
-  { id:'innafrica', name:'Innovation Africa', rel:'Grantee', linkedin:'https://www.linkedin.com/company/innovation-africa/' },
-  { id:'sea',  name:'Switch Energy Alliance', rel:'Grantee', linkedin:null },
-  { id:'aher', name:'Andrew Herscowitz', rel:'EC Leadership', linkedin:'https://www.linkedin.com/in/andrew-herscowitz-32688792/' },
-  { id:'trice', name:'Toby Rice', rel:'EC Leadership', linkedin:'https://www.linkedin.com/in/toby-z-rice-a6738186/' },
-  { id:'stinker', name:'Scott Tinker', rel:'EC Leadership', linkedin:'https://www.linkedin.com/in/tinkerenergyassociates/' },
-  { id:'mjhat', name:'Manaav Jhatakia', rel:'EC Leadership', linkedin:'https://www.linkedin.com/in/mjhatakia/' },
-  { id:'jmanch', name:'Joe Manchin', rel:'EC Leadership', linkedin:null },
-  { id:'mdioha', name:'Michael Dioha', rel:'EC Leadership', linkedin:'https://www.linkedin.com/in/michael-dioha-phd-563aa5b8/' },
-  { id:'mhoward', name:'Mike Howard', rel:'EC Leadership', linkedin:'https://www.linkedin.com/in/mike-howard-76768624b/' },
-  { id:'wvanloh', name:'Wil VanLoh', rel:'EC Leadership', linkedin:'https://www.linkedin.com/in/wilvanloh/' },
-  { id:'cca',  name:'Clean Cooking Alliance', rel:'CCAI', linkedin:'https://www.linkedin.com/company/cleancookingalliance/' },
-  { id:'rfcap', name:'RF Capital', rel:'CCAI', linkedin:'https://www.linkedin.com/company/rfcatalyticcapital/' },
-  { id:'geap', name:'Global Energy Alliance', rel:'CCAI', linkedin:'https://www.linkedin.com/company/globalenergyalliance/' },
-  { id:'rock', name:'Rockefeller Foundation', rel:'CCAI', linkedin:'https://www.linkedin.com/company/the-rockefeller-foundation/' },
-  { id:'e4g',  name:'Energy For Growth Hub', rel:'Key/Potential', linkedin:'https://www.linkedin.com/company/the-energy-for-growth-hub/' },
-  { id:'wm',   name:'Wood Mackenzie', rel:'Publications', linkedin:'https://www.linkedin.com/company/wood-mackenzie/' },
+// MONITOR_SOURCES is the master config for the Daily Monitor scan.
+// quick: true  = included in Quick Scan (highest priority only)
+// quick: false = Full Scan only
+// url: null    = no URL yet, skipped during scan
+const MONITOR_SOURCES = [
+  // GRANTEES
+  { id:'bhlf',     name:'Bettering Human Lives Foundation', rel:'Grantee',      url:'https://www.linkedin.com/company/bettering-human-lives-foundation/posts/?feedView=all', quick:false },
+  { id:'eed',      name:'EED Research Institute',           rel:'Grantee',      url:'https://www.linkedin.com/company/eed-research-institute/',                               quick:false },
+  { id:'gig',      name:'Gigawatt Impact',                  rel:'Grantee',      url:null,                                                                                      quick:false },
+  { id:'iea',      name:'IEA Ghana',                        rel:'Grantee',      url:'https://www.linkedin.com/company/iea-ghana/',                                             quick:false },
+  { id:'innafrica',name:'Innovation Africa',                rel:'Grantee',      url:'https://www.linkedin.com/company/innovation-africa/',                                     quick:false },
+  { id:'sea',      name:'Switch Energy Alliance',           rel:'Grantee',      url:null,                                                                                      quick:false },
+  // EC LEADERSHIP
+  { id:'aher',     name:'Andrew Herscowitz',                rel:'EC Leadership',url:'https://www.linkedin.com/in/andrew-herscowitz-32688792/',                                 quick:true  },
+  { id:'trice',    name:'Toby Rice',                        rel:'EC Leadership',url:'https://www.linkedin.com/in/toby-z-rice-a6738186/',                                       quick:true  },
+  { id:'stinker',  name:'Scott Tinker',                     rel:'EC Leadership',url:'https://www.linkedin.com/in/tinkerenergyassociates/',                                     quick:true  },
+  { id:'mjhat',    name:'Manaav Jhatakia',                  rel:'EC Leadership',url:'https://www.linkedin.com/in/mjhatakia/',                                                   quick:false },
+  { id:'jmanch',   name:'Joe Manchin',                      rel:'EC Leadership',url:null,                                                                                      quick:false },
+  { id:'mdioha',   name:'Michael Dioha',                    rel:'EC Leadership',url:'https://www.linkedin.com/in/michael-dioha-phd-563aa5b8/',                                 quick:false },
+  { id:'mhoward',  name:'Mike Howard',                      rel:'EC Leadership',url:'https://www.linkedin.com/in/mike-howard-76768624b/',                                      quick:false },
+  { id:'wvanloh',  name:'Wil VanLoh',                       rel:'EC Leadership',url:'https://www.linkedin.com/in/wilvanloh/',                                                  quick:true  },
+  // CCAI
+  { id:'cca',      name:'Clean Cooking Alliance',           rel:'CCAI',         url:'https://www.linkedin.com/company/cleancookingalliance/',                                  quick:true  },
+  { id:'rfcap',    name:'RF Capital',                       rel:'CCAI',         url:'https://www.linkedin.com/company/rfcatalyticcapital/',                                    quick:false },
+  { id:'geap',     name:'Global Energy Alliance',           rel:'CCAI',         url:'https://www.linkedin.com/company/globalenergyalliance/',                                  quick:true  },
+  { id:'rock',     name:'Rockefeller Foundation',           rel:'CCAI',         url:'https://www.linkedin.com/company/the-rockefeller-foundation/',                           quick:false },
+  // KEY / PUBLICATIONS
+  { id:'e4g',      name:'Energy For Growth Hub',            rel:'Key/Potential',url:'https://www.linkedin.com/company/the-energy-for-growth-hub/',                             quick:true  },
+  { id:'wm',       name:'Wood Mackenzie',                   rel:'Publications', url:'https://www.linkedin.com/company/wood-mackenzie/',                                        quick:false },
+];
+
+// Keep ACCOUNTS as alias so existing renderAccounts() code doesn't break
+const ACCOUNTS = MONITOR_SOURCES.map(s => ({ ...s, linkedin: s.url }));
 ];
 
 const LOGS_KEY = 'ec_monitor_logs_v2';
@@ -2260,114 +2272,91 @@ function filterAccounts(rel, btn) {
 }
 
 // ══════════════════════════════════════════════════════════
-// MORNING SCAN ENGINE
+// MORNING SCAN ENGINE — SEMI-AUTO TAB LAUNCHER
+// Opens source URLs in new tabs for manual review.
+// Full automation via Feedly+Zapier+Claude coming in Phase 2.
 // ══════════════════════════════════════════════════════════
 
-async function startScan(mode) {
-  const today = todayStr();
-  const logs = getLogs();
+function startScan(mode) {
+  const targets = MONITOR_SOURCES.filter(s => s.url && (mode === 'full' || s.quick));
 
-  let targets;
-  if (mode === 'quick') {
-    const checkedToday = new Set(logs.filter(l => l.date === today).map(l => l.accountId));
-    targets = ACCOUNTS.filter(a => a.linkedin && !checkedToday.has(a.id));
-  } else {
-    targets = ACCOUNTS.filter(a => a.linkedin);
-  }
-
-  if (!targets.length) {
-    toast(mode === 'quick' ? 'All accounts already checked today!' : 'No LinkedIn URLs found.');
-    return;
-  }
-
-  const scanBtn = document.querySelector('.monitor-btn-scan');
-  const panel = document.getElementById('scan-panel');
-  const progress = document.getElementById('scan-progress');
-  const progressBar = document.getElementById('scan-progress-bar');
-  const statusText = document.getElementById('scan-status-text');
-  const results = document.getElementById('scan-results');
+  const panel     = document.getElementById('scan-panel');
+  const results   = document.getElementById('scan-results');
+  const progress  = document.getElementById('scan-progress');
   const timestamp = document.getElementById('scan-timestamp');
 
-  scanBtn.disabled = true;
-  scanBtn.textContent = '⏳ Scanning…';
   panel.style.display = '';
-  progress.style.display = '';
-  results.innerHTML = '';
-  timestamp.textContent = '';
+  progress.style.display = 'none';
+  timestamp.textContent = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
 
-  // Open a single scan tab we'll navigate through each account
-  const scanWin = window.open('about:blank', 'ec_scan_tab', 'width=1100,height=700,left=100,top=100');
-  if (!scanWin) {
-    // Popup blocked — run in URL-only mode (no scraping, just AI briefing from account names/URLs)
-    toast('Popup blocked — generating briefing from account info only. Allow popups for full scraping.');
-    const scrapedData = targets.map(a => ({ account: a, posts: null, error: 'popup_blocked' }));
-    progressBar.style.width = '85%';
-    statusText.textContent = 'Generating AI intelligence briefing…';
-    results.innerHTML = '<div style="color:#888;font-size:0.85rem;">Generating briefing from account list (no scraping — allow popups for full scan)…</div>';
-    try {
-      const briefing = await generateBriefing(scrapedData);
-      progress.style.display = 'none';
-      results.innerHTML = briefing;
-      timestamp.textContent = 'Generated ' + new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-    } catch(e) {
-      progress.style.display = 'none';
-      results.innerHTML = `<div style="color:#cc4444;padding:1rem;">Error: ${e.message}</div>`;
-    }
-    scanBtn.disabled = false;
-    scanBtn.textContent = '▶ Full Scan';
+  if (!targets.length) {
+    results.innerHTML = '<div style="color:#888;padding:0.5rem;">No sources with URLs configured for this scan mode.</div>';
     return;
   }
 
-  const scrapedData = [];
+  // ── Open tabs synchronously (must happen in direct click handler, no async) ──
+  let opened = 0;
+  let blocked = false;
 
-  for (let i = 0; i < targets.length; i++) {
-    const a = targets[i];
-    progressBar.style.width = Math.round((i / targets.length) * 80) + '%';
-    statusText.textContent = `Checking ${i+1} of ${targets.length}: ${a.name}…`;
-    results.innerHTML = `<div style="color:#888;font-size:0.85rem;">Scanning accounts… <strong>${a.name}</strong></div>`;
-
-    try {
-      const postText = await scrapeViaTab(scanWin, a.linkedin);
-      scrapedData.push({ account: a, posts: postText });
-    } catch(e) {
-      scrapedData.push({ account: a, posts: null, error: e.message });
+  targets.forEach((s) => {
+    const win = window.open(s.url, '_blank');
+    if (!win || win.closed || typeof win.closed === 'undefined') {
+      blocked = true;
+    } else {
+      opened++;
     }
+  });
 
-    await sleep(1500);
-  }
+  // ── Group targets by category for the status panel ──
+  const byRel = {};
+  targets.forEach(s => {
+    if (!byRel[s.rel]) byRel[s.rel] = [];
+    byRel[s.rel].push(s);
+  });
 
-  try { scanWin.close(); } catch(e) {}
+  const groupHTML = Object.entries(byRel).map(([rel, sources]) => `
+    <div style="margin-bottom:var(--sp-md);">
+      <div style="font-family:var(--font-emph);font-size:0.72rem;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">${rel}</div>
+      ${sources.map(s => `
+        <div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid var(--mist);">
+          <span style="font-size:0.82rem;color:var(--ink);flex:1;">${s.name}</span>
+          <a href="${s.url}" target="_blank" style="font-size:0.75rem;color:var(--teal-lt);text-decoration:none;font-family:var(--font-body);white-space:nowrap;">Open →</a>
+        </div>`).join('')}
+    </div>`).join('');
 
-  progressBar.style.width = '88%';
-  statusText.textContent = 'Generating AI intelligence briefing…';
-  results.innerHTML = '<div style="color:#888;font-size:0.85rem;">AI is analysing posts and generating your briefing…</div>';
+  if (blocked || opened === 0) {
+    results.innerHTML = \`
+      <div style="background:#fff8f0;border:1px solid var(--orange);border-radius:6px;padding:var(--sp-md);margin-bottom:var(--sp-md);">
+        <strong style="font-family:var(--font-emph);color:var(--orange);font-size:0.85rem;">⚠ Popups blocked</strong>
+        <div style="font-size:0.8rem;color:var(--ink);margin-top:4px;">Allow popups for <strong>ec-social-dash.netlify.app</strong> in your browser settings, then click again. Or use the links below to open each source manually.</div>
+      </div>
+      <div style="font-family:var(--font-emph);font-size:0.8rem;color:var(--teal-dk);margin-bottom:var(--sp-sm);">
+        \${mode === 'quick' ? '⚡ Quick Scan' : '▶ Full Scan'} — \${targets.length} sources
+      </div>
+      \${groupHTML}\`;
+  } else {
+    results.innerHTML = \`
+      <div style="background:#f0faf8;border:1px solid var(--teal-lt);border-radius:6px;padding:var(--sp-md);margin-bottom:var(--sp-md);">
+        <strong style="font-family:var(--font-emph);color:var(--teal-dk);font-size:0.85rem;">✓ Opening \${opened} monitoring source\${opened !== 1 ? 's' : ''}…</strong>
+        <div style="font-size:0.8rem;color:var(--gray-400);margin-top:2px;">Review each tab, then return here. Use the links below to re-open any that didn't load.</div>
+      </div>
+      <div style="font-family:var(--font-emph);font-size:0.8rem;color:var(--teal-dk);margin-bottom:var(--sp-sm);">
+        \${mode === 'quick' ? '⚡ Quick Scan' : '▶ Full Scan'} — \${targets.length} sources · \${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'})}
+      </div>
+      \${groupHTML}\`;
 
-  try {
-    const briefing = await generateBriefing(scrapedData);
-    progressBar.style.width = '100%';
-    await sleep(300);
-    progress.style.display = 'none';
-    results.innerHTML = briefing;
-    timestamp.textContent = 'Generated ' + new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-
-    // Auto-log all scanned accounts as checked
+    // Mark opened accounts as checked today
+    const today = todayStr();
     const allLogs = getLogs();
     const now = new Date();
-    scrapedData.forEach(d => {
-      if (!allLogs.find(l => l.accountId === d.account.id && l.date === today)) {
-        allLogs.push({ id:'log_scan_'+d.account.id, accountId:d.account.id, date:today, time:now.toTimeString().slice(0,5), status: d.posts ? 'checked' : 'no_url', notes:'Auto-scanned' });
+    targets.forEach(s => {
+      if (!allLogs.find(l => l.accountId === s.id && l.date === today)) {
+        allLogs.push({ id:'log_scan_'+s.id, accountId:s.id, date:today, time:now.toTimeString().slice(0,5), status:'checked', notes: mode === 'quick' ? 'Quick scan' : 'Full scan' });
       }
     });
     localStorage.setItem(LOGS_KEY, JSON.stringify(allLogs));
     renderAccounts(currentFilter);
-
-  } catch(e) {
-    progress.style.display = 'none';
-    results.innerHTML = `<div style="color:#cc4444;padding:1rem;background:#fff5f5;border-radius:6px;"><strong>Error generating briefing:</strong> ${e.message}<br><br>Scan data was collected. Try again.</div>`;
   }
-
-  scanBtn.disabled = false;
-  scanBtn.textContent = '▶ Full Scan';
 }
 
 async function scrapeViaTab(win, url) {
