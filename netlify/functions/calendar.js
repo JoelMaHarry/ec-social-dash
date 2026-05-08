@@ -1,46 +1,45 @@
-const { getStore } = require("@netlify/blobs");
+import { getStore } from "@netlify/blobs";
 
 const STORE_NAME = "ec-calendar";
 const KEY = "events";
 
-exports.handler = async (event) => {
-  const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Content-Type": "application/json"
-  };
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "Content-Type",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Content-Type": "application/json"
+};
 
-  if (event.httpMethod === "OPTIONS") {
-    return { statusCode: 200, headers, body: "" };
+export default async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response("", { status: 200, headers: corsHeaders });
   }
 
   const store = getStore(STORE_NAME);
 
-  // GET — return all events
-  if (event.httpMethod === "GET") {
+  if (req.method === "GET") {
     try {
       const data = await store.get(KEY, { type: "json" });
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify(data || [])
-      };
+      return new Response(JSON.stringify(data || []), { status: 200, headers: corsHeaders });
     } catch (e) {
-      return { statusCode: 200, headers, body: JSON.stringify([]) };
+      console.error("Calendar GET error:", e);
+      return new Response(JSON.stringify([]), { status: 200, headers: corsHeaders });
     }
   }
 
-  // POST — save all events
-  if (event.httpMethod === "POST") {
+  if (req.method === "POST") {
     try {
-      const events = JSON.parse(event.body);
-      await store.set(KEY, JSON.stringify(events));
-      return { statusCode: 200, headers, body: JSON.stringify({ ok: true }) };
+      const events = await req.json();
+      await store.setJSON(KEY, events);
+      return new Response(
+        JSON.stringify({ ok: true, count: Array.isArray(events) ? events.length : null }),
+        { status: 200, headers: corsHeaders }
+      );
     } catch (e) {
-      return { statusCode: 500, headers, body: JSON.stringify({ error: e.message }) };
+      console.error("Calendar POST error:", e);
+      return new Response(JSON.stringify({ error: e.message }), { status: 500, headers: corsHeaders });
     }
   }
 
-  return { statusCode: 405, headers, body: "Method not allowed" };
+  return new Response("Method not allowed", { status: 405, headers: corsHeaders });
 };
