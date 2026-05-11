@@ -1268,9 +1268,9 @@
               </div>
               <div class="monitor-controls">
                 <button class="monitor-btn monitor-btn-filter active" onclick="filterAccounts('all', this)">All</button>
-                <button class="monitor-btn monitor-btn-filter" onclick="filterAccounts('Grantee', this)">Grantees</button>
-                <button class="monitor-btn monitor-btn-filter" onclick="filterAccounts('EC Leadership', this)">EC Leadership</button>
-                <button class="monitor-btn monitor-btn-filter" onclick="filterAccounts('CCAI', this)">CCAI</button>
+                <button class="monitor-btn monitor-btn-filter" onclick="filterAccounts('grantee', this)">Grantees</button>
+                <button class="monitor-btn monitor-btn-filter" onclick="filterAccounts('funder', this)">Funders</button>
+                <button class="monitor-btn monitor-btn-filter" onclick="filterAccounts('person', this)">People</button>
               </div>
 
               <!-- SCAN BRIEFING PANEL -->
@@ -2239,35 +2239,35 @@ function toast(msg) {
 }
 
 // ── MONITOR DAILY ACCOUNTS ──
-// MONITOR_SOURCES is the master config for the Daily Monitor scan.
-// quick: true  = included in Quick Scan (highest priority only)
-// quick: false = Full Scan only
-// url: null    = no URL yet, skipped during scan
+// rel:    'grantee' | 'funder' | 'person'
+// repost: true  = we may repost their content
+// repost: false = scan-only (never repost)
+// url: null     = placeholder, skipped at scan time
 const MONITOR_SOURCES = [
-  // GRANTEES
-  { id:'bhlf',     name:'Bettering Human Lives Foundation', rel:'Grantee',      url:'https://www.linkedin.com/company/bettering-human-lives-foundation/posts/?feedView=all', quick:false },
-  { id:'eed',      name:'EED Research Institute',           rel:'Grantee',      url:'https://www.linkedin.com/company/eed-research-institute/',                               quick:false },
-  { id:'gig',      name:'Gigawatt Impact',                  rel:'Grantee',      url:null,                                                                                      quick:false },
-  { id:'iea',      name:'IEA Ghana',                        rel:'Grantee',      url:'https://www.linkedin.com/company/iea-ghana/',                                             quick:false },
-  { id:'innafrica',name:'Innovation Africa',                rel:'Grantee',      url:'https://www.linkedin.com/company/innovation-africa/',                                     quick:false },
-  { id:'sea',      name:'Switch Energy Alliance',           rel:'Grantee',      url:null,                                                                                      quick:false },
-  // EC LEADERSHIP
-  { id:'aher',     name:'Andrew Herscowitz',                rel:'EC Leadership',url:'https://www.linkedin.com/in/andrew-herscowitz-32688792/',                                 quick:true  },
-  { id:'trice',    name:'Toby Rice',                        rel:'EC Leadership',url:'https://www.linkedin.com/in/toby-z-rice-a6738186/',                                       quick:true  },
-  { id:'stinker',  name:'Scott Tinker',                     rel:'EC Leadership',url:'https://www.linkedin.com/in/tinkerenergyassociates/',                                     quick:true  },
-  { id:'mjhat',    name:'Manaav Jhatakia',                  rel:'EC Leadership',url:'https://www.linkedin.com/in/mjhatakia/',                                                   quick:false },
-  { id:'jmanch',   name:'Joe Manchin',                      rel:'EC Leadership',url:null,                                                                                      quick:false },
-  { id:'mdioha',   name:'Michael Dioha',                    rel:'EC Leadership',url:'https://www.linkedin.com/in/michael-dioha-phd-563aa5b8/',                                 quick:false },
-  { id:'mhoward',  name:'Mike Howard',                      rel:'EC Leadership',url:'https://www.linkedin.com/in/mike-howard-76768624b/',                                      quick:false },
-  { id:'wvanloh',  name:'Wil VanLoh',                       rel:'EC Leadership',url:'https://www.linkedin.com/in/wilvanloh/',                                                  quick:true  },
-  // CCAI
-  { id:'cca',      name:'Clean Cooking Alliance',           rel:'CCAI',         url:'https://www.linkedin.com/company/cleancookingalliance/',                                  quick:true  },
-  { id:'rfcap',    name:'RF Capital',                       rel:'CCAI',         url:'https://www.linkedin.com/company/rfcatalyticcapital/',                                    quick:false },
-  { id:'geap',     name:'Global Energy Alliance',           rel:'CCAI',         url:'https://www.linkedin.com/company/globalenergyalliance/',                                  quick:true  },
-  { id:'rock',     name:'Rockefeller Foundation',           rel:'CCAI',         url:'https://www.linkedin.com/company/the-rockefeller-foundation/',                           quick:false },
-  // KEY / PUBLICATIONS
-  { id:'e4g',      name:'Energy For Growth Hub',            rel:'Key/Potential',url:'https://www.linkedin.com/company/the-energy-for-growth-hub/',                             quick:true  },
-  { id:'wm',       name:'Wood Mackenzie',                   rel:'Publications', url:'https://www.linkedin.com/company/wood-mackenzie/',                                        quick:false },
+  // GRANTEES (Cat 1) — repost allowed
+  { id: 'bhlf',  name: 'Bettering Human Lives Foundation', rel: 'grantee', url: 'https://www.linkedin.com/company/bettering-human-lives-foundation/', repost: true },
+  { id: 'cca',   name: 'Clean Cooking Alliance',           rel: 'grantee', url: 'https://www.linkedin.com/company/cleancookingalliance/', repost: true },
+  { id: 'eri',   name: 'EED Research Institute',           rel: 'grantee', url: 'https://www.linkedin.com/company/eed-advisory/', repost: true },
+  { id: 'gw',    name: 'Gigawatt Global',                  rel: 'grantee', url: 'https://www.linkedin.com/company/gigawattglobal/', repost: true },
+  { id: 'iea',   name: 'IEA Ghana',                        rel: 'grantee', url: null, repost: true },
+  { id: 'inn',   name: 'Innovation: Africa',               rel: 'grantee', url: 'https://www.linkedin.com/company/innovation-africa/', repost: true },
+  { id: 'sea',   name: 'Switch Energy Alliance',           rel: 'grantee', url: 'https://www.linkedin.com/company/switch-energy-alliance/', repost: true },
+
+  // FOUNDING FUNDERS (Cat 2) — repost allowed
+  { id: 'bpf',   name: 'Boardwalk Pipeline Foundation',                rel: 'funder', url: null, repost: true },
+  { id: 'rfcc',  name: 'RF Catalytic Capital',                         rel: 'funder', url: 'https://www.linkedin.com/company/rf-catalytic-capital/', repost: true },
+  { id: 'se',    name: 'Spotlight Energy',                             rel: 'funder', url: null, repost: true },
+  { id: 'mmhff', name: 'Meredith and Mike Howard Family Foundation',   rel: 'funder', url: null, repost: true },
+  { id: 'rff',   name: 'Rice Family Foundation',                       rel: 'funder', url: null, repost: true },
+
+  // PEOPLE — scan only, never repost
+  { id: 'ah',    name: 'Andrew Herscowitz', rel: 'person', url: 'https://www.linkedin.com/in/andrew-herscowitz/',     repost: false },
+  { id: 'tr',    name: 'Toby Rice',         rel: 'person', url: 'https://www.linkedin.com/in/toby-rice-70891429/',    repost: false },
+  { id: 'st',    name: 'Scott Tinker',      rel: 'person', url: 'https://www.linkedin.com/in/scotttinker/',           repost: false },
+  { id: 'mj',    name: 'Manaav Jhatakia',   rel: 'person', url: 'https://www.linkedin.com/in/manaavjhatakia/',        repost: false },
+  { id: 'jm',    name: 'Joe Manchin',       rel: 'person', url: 'https://www.linkedin.com/in/senjoemanchin/',         repost: false },
+  { id: 'mh',    name: 'Mike Howard',       rel: 'person', url: 'https://www.linkedin.com/in/mikehowardceo/',         repost: false },
+  { id: 'wvl',   name: 'Wil VanLoh',        rel: 'person', url: 'https://www.linkedin.com/in/wilvanloh/',             repost: false },
 ];
 
 // Keep ACCOUNTS as alias so existing renderAccounts() code doesn't break
@@ -2292,15 +2292,16 @@ function getStatusForAccount(id) {
 }
 
 function relClass(rel) {
-  if (rel === 'Grantee') return 'rel-grantee';
-  if (rel === 'EC Leadership') return 'rel-ec';
-  if (rel === 'CCAI') return 'rel-ccai';
-  if (rel === 'Key/Potential') return 'rel-key';
+  if (rel === 'grantee') return 'rel-grantee';
+  if (rel === 'funder')  return 'rel-ec';
+  if (rel === 'person')  return 'rel-ccai';
   return 'rel-pub';
 }
 
 function relShort(rel) {
-  if (rel === 'EC Leadership') return 'EC Leadership';
+  if (rel === 'grantee') return 'Grantee';
+  if (rel === 'funder')  return 'Funder';
+  if (rel === 'person')  return 'Person';
   return rel;
 }
 
@@ -2355,7 +2356,7 @@ function filterAccounts(rel, btn) {
 // ══════════════════════════════════════════════════════════
 
 function startScan(mode) {
-  var targets = MONITOR_SOURCES.filter(function(s) { return s.url && (mode === 'full' || s.quick); });
+  var targets = MONITOR_SOURCES.filter(function(s) { return s.url; });
 
   var panel     = document.getElementById('scan-panel');
   var results   = document.getElementById('scan-results');
@@ -2402,7 +2403,7 @@ function startScan(mode) {
         + '</div>';
     });
     groupHTML += '<div style="margin-bottom:var(--sp-md);">'
-      + '<div style="font-family:var(--font-emph);font-size:0.72rem;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">' + rel + '</div>'
+      + '<div style="font-family:var(--font-emph);font-size:0.72rem;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">' + relShort(rel) + '</div>'
       + rowsHTML
       + '</div>';
   });
