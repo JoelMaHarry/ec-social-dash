@@ -2289,6 +2289,126 @@ const MONITOR_SOURCES = [
 // Keep ACCOUNTS as alias so existing renderAccounts() code doesn't break
 const ACCOUNTS = MONITOR_SOURCES.map(s => ({ ...s, linkedin: s.url }));
 
+const SCAN_KEYWORDS = {
+  brand: ['Energy Corps', 'EnergyCorps'],
+  partners: [
+    'Bettering Human Lives Foundation', 'BHLF',
+    'Switch Energy Alliance', 'SEA',
+    'Innovation: Africa',
+    'IEA Ghana',
+    'Gigawatt Global', 'Gigawatt Impact',
+    'EED Research Institute', 'ERI', 'EEDRI',
+    'Clean Cooking Alliance', 'CCA',
+    'Boardwalk Pipeline Foundation',
+    'RF Catalytic Capital', 'RFCC',
+    'Spotlight Energy',
+    'Meredith and Mike Howard Family Foundation',
+    'Rice Family Foundation',
+    'NRECA International', 'MCC', 'ExIm Bank'
+  ],
+  mission: [
+    'energy access',
+    'energy poverty',
+    'energy prosperity',
+    'modern energy',
+    'modern energy at scale',
+    '50-50-50', '#505050',
+    'human flourishing',
+    'global energy poverty',
+    'prosperity through energy',
+    'energy is opportunity'
+  ],
+  tracked: [
+    'Andrew Herscowitz',
+    'Toby Rice',
+    'Scott Tinker',
+    'Mike Howard',
+    'Wil VanLoh',
+    'Joe Manchin'
+  ],
+  redFlag: [
+    'fight against',
+    'war on',
+    'real climate solutions',
+    'anti-science',
+    'common-sense'
+  ]
+};
+
+function buildScanPrompt(lastSeenState) {
+  lastSeenState = lastSeenState || {};
+  var withUrl = MONITOR_SOURCES.filter(function(s) { return s.url; });
+  var noUrl   = MONITOR_SOURCES.filter(function(s) { return !s.url; });
+  var personCount = MONITOR_SOURCES.filter(function(s) { return s.rel === 'person'; }).length;
+  var nowIso = new Date().toISOString();
+
+  var sourcesScan = withUrl.map(function(s) {
+    var since = lastSeenState[s.id] || 'first scan';
+    var repost = s.rel === 'person' ? 'no' : 'yes';
+    return '  - ' + s.name + ' (' + s.rel + ') — ' + s.url
+      + '\n    Since: ' + since
+      + '\n    Repost allowed: ' + repost;
+  }).join('\n');
+
+  var sourcesSkip = noUrl.map(function(s) {
+    return '  - ' + s.name + ' (' + s.rel + ')';
+  }).join('\n');
+
+  return [
+    'MORNING SCAN — Energy Corps',
+    'Generated: ' + nowIso,
+    'Total sources to scan: ' + withUrl.length,
+    '',
+    'You are running a Morning Scan on behalf of Energy Corps, an energy-poverty nonprofit. Your job: open each source URL below, review LinkedIn activity since the lastSeen timestamp for that source, and produce a structured briefing in markdown.',
+    '',
+    'VOICE — fact-led, terse, observational. Each entry: who posted, what about, one detail. No editorializing, no marketing language, no opinion. Example:',
+    '"RF Catalytic Capital announced a $120M minigrid deployment commitment across Sub-Saharan Africa, partnering with 4 country governments. [link]"',
+    'Not:',
+    '"Exciting news from RF Catalytic Capital today! Their landmark announcement signals a major shift..."',
+    '',
+    'SOURCES TO SCAN:',
+    sourcesScan,
+    '',
+    'SOURCES TO SKIP (no URL available):',
+    sourcesSkip,
+    '',
+    'FLAGGING KEYWORDS — any post mentioning these gets surfaced in the FLAGGED section:',
+    'Brand: ' + SCAN_KEYWORDS.brand.join(', '),
+    'Partners: ' + SCAN_KEYWORDS.partners.join(', '),
+    'Mission keywords: ' + SCAN_KEYWORDS.mission.join(', '),
+    'Tracked individuals: ' + SCAN_KEYWORDS.tracked.join(', '),
+    '',
+    'RED-FLAG TERMS — flag with caution note, do NOT recommend for repost:',
+    SCAN_KEYWORDS.redFlag.join(', '),
+    '',
+    'INDIVIDUAL ACCOUNTS NOTE: For the ' + personCount + ' sources with rel=\'person\', we scan for awareness but EC policy is never to repost from personal accounts. Flag any EC mentions for visibility but mark "for awareness only — do not repost."',
+    '',
+    'OUTPUT FORMAT (markdown):',
+    '',
+    '# Morning Scan — [date readable]',
+    '**Generated:** [time]',
+    '**Window:** [earliest source lastSeen] to now',
+    '**Sources scanned:** [N] · **Active:** [M] · **Flagged:** [K]',
+    '',
+    '## FLAGGED ([K])',
+    '- **[Source name]** — [one-line summary]. *[reason for flag — keyword(s) matched]*',
+    '  [link]',
+    '',
+    '## NEW POSTS ([J])',
+    '**[Source name]** ([M new])',
+    '- [one-line summary] [link]',
+    '',
+    '## NO ACTIVITY ([L sources])',
+    '[Source names, comma separated]',
+    '',
+    '---',
+    '',
+    'When you have produced the full markdown briefing, copy the entire markdown text. Joel will paste it into the dashboard. Do not attempt to POST to any URL — the dashboard handles storage.',
+    '',
+    'Begin by opening the first source URL.'
+  ].join('\n');
+}
+
 const LOGS_KEY = 'ec_monitor_logs_v2';
 
 function getLogs() {
