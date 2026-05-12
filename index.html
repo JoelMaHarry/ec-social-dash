@@ -2231,6 +2231,17 @@
 
 <div id="toast"></div>
 
+<!-- BRIEF ARCHIVE MODAL -->
+<div id="brief-archive-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:12px;padding:24px;width:680px;max-width:95vw;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-shrink:0;">
+      <div style="font-family:var(--font-emph);font-size:18px;color:var(--teal-dk);">Brief Archive</div>
+      <button onclick="closeBriefArchive()" style="background:none;border:none;cursor:pointer;font-size:20px;color:#999;">&#x2715;</button>
+    </div>
+    <div id="brief-archive-list" style="overflow-y:auto;flex:1;"></div>
+  </div>
+</div>
+
 <script>
 // ── NAVIGATION ──
 function navigate(pageId) {
@@ -2616,7 +2627,36 @@ async function loadLatestBrief() {
 }
 
 function openBriefArchive() {
-  // wired in commit 4
+  const list = document.getElementById('brief-archive-list');
+  const briefs = monitorState.briefs || [];
+  if (!briefs.length) {
+    list.innerHTML = '<div style="color:var(--gray-400);font-size:0.85rem;padding:12px;">No briefs in archive.</div>';
+  } else {
+    list.innerHTML = briefs.map(function(b, i) {
+      return '<div style="border:1px solid var(--mist);border-radius:6px;margin-bottom:8px;overflow:hidden;">'
+        + '<div onclick="toggleArchiveRow(' + i + ')" style="padding:10px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:var(--fog);">'
+        +   '<strong style="font-family:var(--font-emph);font-size:0.85rem;color:var(--teal-dk);">' + formatBriefTimestamp(b.createdAt) + '</strong>'
+        +   '<span style="font-size:0.75rem;color:var(--gray-400);">' + (i === 0 ? 'Latest' : '#' + (i + 1)) + '</span>'
+        + '</div>'
+        + '<div id="archive-body-' + i + '" style="display:none;padding:14px;font-size:0.82rem;line-height:1.6;color:var(--ink);border-top:1px solid var(--mist);"></div>'
+        + '</div>';
+    }).join('');
+  }
+  document.getElementById('brief-archive-overlay').style.display = 'flex';
+}
+
+function closeBriefArchive() {
+  document.getElementById('brief-archive-overlay').style.display = 'none';
+}
+
+function toggleArchiveRow(i) {
+  const body = document.getElementById('archive-body-' + i);
+  if (body.style.display === 'none') {
+    body.innerHTML = renderMarkdown(monitorState.briefs[i].markdown);
+    body.style.display = '';
+  } else {
+    body.style.display = 'none';
+  }
 }
 
 // ── CONTENT CALENDAR PREVIEW ──
