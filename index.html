@@ -1122,6 +1122,7 @@
 }
 
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/13.0.3/marked.min.js"></script>
 </head>
 <body>
 
@@ -1258,8 +1259,7 @@
               <span style="color:var(--teal-dk);font-family:var(--font-emph);font-weight:700;font-size:0.9rem;">Daily Monitor</span>
               </div>
               <div style="display:flex;gap:8px;align-items:center;">
-                <button class="monitor-btn monitor-btn-scan" onclick="startScan('full')">▶ Full Scan</button>
-                <button class="monitor-btn monitor-btn-quick" onclick="startScan('quick')">⚡ Quick</button>
+                <button class="monitor-btn monitor-btn-scan" onclick="runMorningScan()">&#9889; Run Morning Scan</button>
               </div>
             </div>
             <div class="card-body">
@@ -1277,25 +1277,41 @@
                 <button class="monitor-btn monitor-btn-filter" onclick="filterAccounts('person', this)">People</button>
               </div>
 
-              <!-- SCAN BRIEFING PANEL -->
+              <!-- MORNING SCAN PANEL -->
               <div id="scan-panel" style="display:none;background:#fff;border:2px solid var(--orange);border-radius:var(--r-lg);padding:var(--sp-lg);margin-bottom:var(--sp-md);">
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--sp-md);">
-                  <strong style="font-family:var(--font-emph);color:var(--orange);font-size:0.95rem;">☀ Morning Intelligence Briefing</strong>
-                  <div style="display:flex;gap:var(--sp-sm);align-items:center;">
-                    <span id="scan-timestamp" style="font-size:0.75rem;color:var(--gray-400);"></span>
-                    <button onclick="document.getElementById('scan-panel').style.display='none'" style="background:none;border:none;color:var(--gray-400);cursor:pointer;font-size:1.2rem;line-height:1;">×</button>
+                  <strong style="font-family:var(--font-emph);color:var(--orange);font-size:0.95rem;">&#9889; Morning Scan</strong>
+                  <button onclick="document.getElementById('scan-panel').style.display='none'" style="background:none;border:none;color:var(--gray-400);cursor:pointer;font-size:1.2rem;line-height:1;">&times;</button>
+                </div>
+                <div style="background:#f0faf8;border:1px solid var(--teal-lt);border-radius:6px;padding:var(--sp-md);margin-bottom:var(--sp-md);">
+                  <strong style="font-family:var(--font-emph);color:var(--teal-dk);font-size:0.85rem;">&#10003; Prompt copied to clipboard</strong>
+                  <div style="font-size:0.8rem;color:var(--ink);margin-top:4px;">Paste it into the Claude Chrome extension to begin scan. When Claude returns the markdown brief, paste it below and click Save Brief.</div>
+                </div>
+                <div>
+                  <div style="font-family:var(--font-emph);font-size:0.75rem;color:var(--gray-500);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Paste briefing here after extension scan completes</div>
+                  <textarea id="scan-brief-input" style="width:100%;box-sizing:border-box;height:180px;border:1px solid var(--mist);border-radius:6px;padding:8px;font-family:var(--font-body);font-size:0.78rem;color:var(--ink);resize:vertical;" placeholder="# Morning Scan — May 12, 2026&#10;**Generated:** ..."></textarea>
+                  <div style="display:flex;gap:8px;margin-top:8px;align-items:center;">
+                    <button onclick="saveBrief()" style="background:var(--orange);color:#fff;border:none;border-radius:6px;padding:6px 14px;font-family:var(--font-emph);font-size:0.8rem;cursor:pointer;">Save Brief</button>
+                    <span id="scan-submit-status" style="font-size:0.78rem;color:var(--gray-400);"></span>
                   </div>
                 </div>
-                <div id="scan-progress" style="display:none;margin-bottom:var(--sp-md);">
-                  <div style="background:var(--mist);border-radius:4px;height:6px;overflow:hidden;">
-                    <div id="scan-progress-bar" style="background:var(--orange);height:100%;width:0%;transition:width 0.4s;"></div>
-                  </div>
-                  <div id="scan-status-text" style="font-size:0.8rem;color:var(--gray-400);margin-top:var(--sp-xs);"></div>
-                </div>
-                <div id="scan-results" style="font-size:0.875rem;line-height:1.7;color:var(--ink);"></div>
               </div>
 
               <div class="account-grid" id="account-grid"></div>
+
+              <!-- LATEST BRIEF -->
+              <div id="latest-brief-section" style="margin-top:var(--sp-md);padding:var(--sp-md);background:var(--fog);border-radius:var(--r-md);border:1px solid var(--mist);">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--sp-sm);">
+                  <div>
+                    <strong style="font-family:var(--font-emph);color:var(--teal-dk);font-size:0.85rem;">Latest Brief</strong>
+                    <span id="latest-brief-when" style="margin-left:8px;color:var(--gray-400);font-size:0.78rem;"></span>
+                  </div>
+                  <a id="latest-brief-archive" onclick="openBriefArchive()" style="font-size:0.75rem;color:var(--teal);text-decoration:none;cursor:pointer;display:none;">View archive &rarr;</a>
+                </div>
+                <div id="latest-brief-body" style="font-size:0.82rem;line-height:1.6;color:var(--ink);">
+                  <div style="color:var(--gray-400);font-size:0.78rem;">No brief yet. Click Run Morning Scan to generate one.</div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -2486,181 +2502,122 @@ function filterAccounts(rel, btn) {
 }
 
 // ══════════════════════════════════════════════════════════
-// MORNING SCAN ENGINE — SEMI-AUTO TAB LAUNCHER
-// Opens source URLs in new tabs for manual review.
-// Full automation via Feedly+Zapier+Claude coming in Phase 2.
+// MORNING SCAN — clipboard-prompt → extension → markdown brief
 // ══════════════════════════════════════════════════════════
 
-function startScan(mode) {
-  var targets = MONITOR_SOURCES.filter(function(s) { return s.url; });
+const MONITOR_API = '/.netlify/functions/monitor';
+let monitorState = { lastSeenState: {}, briefs: [] };
 
-  var panel     = document.getElementById('scan-panel');
-  var results   = document.getElementById('scan-results');
-  var progress  = document.getElementById('scan-progress');
-  var timestamp = document.getElementById('scan-timestamp');
+async function loadMonitorState() {
+  try {
+    const res = await fetch(MONITOR_API);
+    if (!res.ok) throw new Error('GET ' + res.status);
+    monitorState = await res.json();
+  } catch (e) {
+    console.error('Monitor GET error:', e);
+    monitorState = { lastSeenState: {}, briefs: [] };
+  }
+  return monitorState;
+}
 
-  panel.style.display = '';
-  progress.style.display = 'none';
-  timestamp.textContent = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+async function runMorningScan() {
+  await loadMonitorState();
+  const prompt = buildScanPrompt(monitorState.lastSeenState);
+  try {
+    await navigator.clipboard.writeText(prompt);
+  } catch (e) {
+    console.error('Clipboard write failed:', e);
+    alert('Could not copy to clipboard. Browser may have blocked clipboard access.');
+    return;
+  }
+  document.getElementById('scan-panel').style.display = '';
+  document.getElementById('scan-brief-input').value = '';
+  document.getElementById('scan-submit-status').textContent = '';
+}
 
-  if (!targets.length) {
-    results.innerHTML = '<div style="color:#888;padding:0.5rem;">No sources with URLs configured for this scan mode.</div>';
+async function saveBrief() {
+  const ta = document.getElementById('scan-brief-input');
+  const status = document.getElementById('scan-submit-status');
+  const markdown = ta.value.trim();
+  if (!markdown) {
+    status.style.color = 'var(--orange)';
+    status.textContent = 'Paste a brief first.';
     return;
   }
 
-  // Open tabs synchronously in direct click handler
-  var opened = 0;
-  var blocked = false;
+  status.style.color = 'var(--gray-400)';
+  status.textContent = 'Saving…';
 
-  targets.forEach(function(s) {
-    var win = window.open(s.url, '_blank');
-    if (!win || win.closed || typeof win.closed === 'undefined') {
-      blocked = true;
-    } else {
-      opened++;
-    }
-  });
-
-  // Group by relationship category
-  var byRel = {};
-  targets.forEach(function(s) {
-    if (!byRel[s.rel]) byRel[s.rel] = [];
-    byRel[s.rel].push(s);
-  });
-
-  var groupHTML = '';
-  Object.keys(byRel).forEach(function(rel) {
-    var sources = byRel[rel];
-    var rowsHTML = '';
-    sources.forEach(function(s) {
-      rowsHTML += '<div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid var(--mist);">'
-        + '<span style="font-size:0.82rem;color:var(--ink);flex:1;">' + s.name + '</span>'
-        + '<a href="' + s.url + '" target="_blank" style="font-size:0.75rem;color:var(--teal-lt);text-decoration:none;font-family:var(--font-body);white-space:nowrap;">Open \u2192</a>'
-        + '</div>';
-    });
-    groupHTML += '<div style="margin-bottom:var(--sp-md);">'
-      + '<div style="font-family:var(--font-emph);font-size:0.72rem;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">' + relShort(rel) + '</div>'
-      + rowsHTML
-      + '</div>';
-  });
-
-  var modeLabel = mode === 'quick' ? '\u26a1 Quick Scan' : '\u25b6 Full Scan';
-  var dateLabel = new Date().toLocaleDateString('en-US', {month:'short', day:'numeric'});
-
-  if (blocked || opened === 0) {
-    results.innerHTML = '<div style="background:#fff8f0;border:1px solid var(--orange);border-radius:6px;padding:var(--sp-md);margin-bottom:var(--sp-md);">'
-      + '<strong style="font-family:var(--font-emph);color:var(--orange);font-size:0.85rem;">\u26a0 Popups blocked</strong>'
-      + '<div style="font-size:0.8rem;color:var(--ink);margin-top:4px;">Allow popups for <strong>ec-social-dash.netlify.app</strong> in your browser settings, then click again. Or use the links below to open each source manually.</div>'
-      + '</div>'
-      + '<div style="font-family:var(--font-emph);font-size:0.8rem;color:var(--teal-dk);margin-bottom:var(--sp-sm);">' + modeLabel + ' \u2014 ' + targets.length + ' sources</div>'
-      + groupHTML;
-  } else {
-    var plural = opened !== 1 ? 's' : '';
-    results.innerHTML = '<div style="background:#f0faf8;border:1px solid var(--teal-lt);border-radius:6px;padding:var(--sp-md);margin-bottom:var(--sp-md);">'
-      + '<strong style="font-family:var(--font-emph);color:var(--teal-dk);font-size:0.85rem;">\u2713 Opening ' + opened + ' monitoring source' + plural + '\u2026</strong>'
-      + '<div style="font-size:0.8rem;color:var(--gray-400);margin-top:2px;">Review each tab, then return here. Use the links below to re-open any that did not load.</div>'
-      + '</div>'
-      + '<div style="font-family:var(--font-emph);font-size:0.8rem;color:var(--teal-dk);margin-bottom:var(--sp-sm);">' + modeLabel + ' \u2014 ' + targets.length + ' sources \u00b7 ' + dateLabel + '</div>'
-      + groupHTML;
-
-    // Mark accounts as checked today
-    var today = todayStr();
-    var allLogs = getLogs();
-    var now = new Date();
-    targets.forEach(function(s) {
-      if (!allLogs.find(function(l) { return l.accountId === s.id && l.date === today; })) {
-        allLogs.push({ id:'log_scan_'+s.id, accountId:s.id, date:today, time:now.toTimeString().slice(0,5), status:'checked', notes: mode === 'quick' ? 'Quick scan' : 'Full scan' });
-      }
-    });
-    localStorage.setItem(LOGS_KEY, JSON.stringify(allLogs));
-    renderAccounts(currentFilter);
-  }
-}
-
-async function scrapeViaTab(win, url) {
-  // Navigate the scan window to the LinkedIn URL
-  win.location.href = url;
-
-  // Wait for page to load, then inject JS to extract post text
-  // We use sessionStorage as a message bus — the scan window writes its text there
-  // and we poll for it from the parent window (same origin won't work cross-origin,
-  // so we inject via the window reference directly after load)
-  await sleep(3500); // give LinkedIn time to load
+  const createdAt = new Date().toISOString();
+  const earliestSeen = Object.values(monitorState.lastSeenState).sort()[0];
+  const brief = {
+    id: 'brief-' + createdAt.replace(/[:.]/g, '-'),
+    createdAt: createdAt,
+    windowStart: earliestSeen || null,
+    markdown: markdown
+  };
+  const sourceIds = MONITOR_SOURCES.map(function(s) { return s.id; });
 
   try {
-    // Try direct JS injection into the popup window — works when popup is same session
-    const postText = win.eval(`
-      (function() {
-        var posts = [];
-        var els = document.querySelectorAll('.feed-shared-update-v2, .occludable-update, [data-id]');
-        els.forEach(function(el, i) {
-          if (i > 7) return;
-          var t = el.innerText && el.innerText.trim();
-          if (t && t.length > 80) posts.push(t.slice(0, 600));
-        });
-        if (!posts.length) {
-          // Fallback: grab meaningful body text
-          var body = document.body.innerText || '';
-          return body.slice(0, 3000);
-        }
-        return posts.join('\\n---\\n').slice(0, 3500);
-      })()
-    `);
-    return postText || null;
-  } catch(e) {
-    // Cross-origin block — fall back to null (will still generate briefing with account name/URL only)
-    return null;
+    const res = await fetch(MONITOR_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'brief', data: brief, sourceIds: sourceIds })
+    });
+    if (!res.ok) throw new Error('POST ' + res.status);
+    await res.json();
+    status.style.color = 'var(--teal-dk)';
+    status.textContent = 'Saved.';
+    ta.value = '';
+    setTimeout(function() {
+      document.getElementById('scan-panel').style.display = 'none';
+    }, 800);
+    await loadLatestBrief();
+  } catch (e) {
+    console.error('Save brief error:', e);
+    status.style.color = 'var(--orange)';
+    status.textContent = 'Save failed: ' + e.message;
   }
 }
 
-async function generateBriefing(scrapedData) {
-  const accountSummaries = scrapedData.map(d => {
-    if (!d.posts || d.error) {
-      return `**${d.account.name}** (${d.account.rel})\nLinkedIn: ${d.account.linkedin}\nStatus: Could not auto-read. Manual check required.\n`;
-    }
-    return `**${d.account.name}** (${d.account.rel})\nLinkedIn: ${d.account.linkedin}\nRecent page content:\n${d.posts}\n`;
-  }).join('\n---\n');
-
-  const prompt = `You are the social media intelligence assistant for Energy Corps, a nonprofit focused on energy access and clean cooking in Sub-Saharan Africa and the developing world.
-
-Below is scraped LinkedIn content from ${scrapedData.length} accounts that Energy Corps monitors. For each account, provide:
-1. A 1-2 sentence précis of their most recent post(s)
-2. Relevance to Energy Corps (high/medium/low) and why
-3. A specific suggested engagement action (comment, repost, share, tag, or none)
-
-Keep the tone professional, sharp, and actionable. Group by relationship type. Flag any posts that are especially timely or strategically important for Energy Corps to engage with TODAY.
-
-Format as clean HTML using <div>, <strong>, <span> tags (no markdown). Use color #006872 for high relevance, #FF8F22 for medium, #aaa for low.
-
-ACCOUNTS TO BRIEF:
-${accountSummaries}
-
-End with a "Today's Priority Actions" section listing the top 3 engagement opportunities in order of strategic importance for Energy Corps.`;
-
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 1000,
-      messages: [{ role: 'user', content: prompt }]
-    })
-  });
-
-  if (!response.ok) throw new Error('API error ' + response.status);
-  const data = await response.json();
-  const text = data.content?.find(b => b.type === 'text')?.text || '';
-
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/\n/g, '<br>')
-    .replace(/^/, '<p>')
-    .replace(/$/, '</p>');
+function renderMarkdown(md) {
+  if (typeof marked === 'undefined') {
+    const escaped = md.replace(/[&<>]/g, function(c) { return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; });
+    return '<pre style="white-space:pre-wrap;">' + escaped + '</pre>';
+  }
+  return marked.parse(md);
 }
 
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+function formatBriefTimestamp(iso) {
+  try {
+    return new Date(iso).toLocaleString('en-US', { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' });
+  } catch (e) { return iso; }
+}
 
+async function loadLatestBrief() {
+  await loadMonitorState();
+  const body = document.getElementById('latest-brief-body');
+  const when = document.getElementById('latest-brief-when');
+  const archive = document.getElementById('latest-brief-archive');
+  if (!body) return;
+
+  const briefs = monitorState.briefs || [];
+  if (!briefs.length) {
+    body.innerHTML = '<div style="color:var(--gray-400);font-size:0.78rem;">No brief yet. Click Run Morning Scan to generate one.</div>';
+    when.textContent = '';
+    archive.style.display = 'none';
+    return;
+  }
+
+  const latest = briefs[0];
+  body.innerHTML = renderMarkdown(latest.markdown);
+  when.textContent = '— ' + formatBriefTimestamp(latest.createdAt);
+  archive.style.display = briefs.length > 1 ? '' : 'none';
+}
+
+function openBriefArchive() {
+  // wired in commit 4
+}
 
 // ── CONTENT CALENDAR PREVIEW ──
 const CALENDAR_EVENTS = [
@@ -3504,7 +3461,7 @@ function renderCal() {
 }
 
 // Init calendar when page loads
-document.addEventListener('DOMContentLoaded', () => { calLoadEvents(); });
+document.addEventListener('DOMContentLoaded', () => { calLoadEvents(); loadLatestBrief(); });
 
 // Also render when navigating to calendar page
 // Render calendar when navigating to it
