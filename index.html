@@ -752,6 +752,98 @@
     min-height: 600px;
   }
 
+
+  /* ── CONTENT CALENDAR ── */
+  .cal-day-header {
+    background: var(--purple);
+    color: #fff;
+    font-family: var(--font-emph);
+    font-size: 11px;
+    text-align: center;
+    padding: 8px 4px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+  }
+  .cal-day {
+    background: #fff;
+    border: 1px solid var(--mist);
+    border-radius: 6px;
+    min-height: 90px;
+    padding: 6px;
+    position: relative;
+    vertical-align: top;
+  }
+  .cal-day.today { border-color: var(--orange); border-width: 2px; }
+  .cal-day.other-month { background: var(--fog); opacity: 0.5; }
+  .cal-day-num {
+    font-family: var(--font-emph);
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 4px;
+  }
+  .cal-day.today .cal-day-num { color: var(--orange); font-size: 13px; }
+  .cal-event {
+    font-family: var(--font-body);
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-bottom: 2px;
+    cursor: pointer;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+  }
+  .cal-event:hover { opacity: 0.85; }
+  .cal-event-var {
+    font-family: var(--font-body);
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-bottom: 2px;
+    cursor: pointer;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+    border-left: 3px solid rgba(255,255,255,0.6);
+  }
+  .cal-filter-btn {
+    background: var(--fog);
+    border: 1px solid var(--mist);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--ink);
+  }
+  .cal-filter-btn:hover { background: var(--mist); }
+  .cal-filter-btn.active-filter { background: var(--teal-dk); color: #fff; border-color: var(--teal-dk); }
+  .cat-global    { background: #2a9d8f; }
+  .cat-policy    { background: #3C3F74; }
+  .cat-industry  { background: #e76f51; }
+  .cat-ngo       { background: #457b9d; }
+  .cat-strategic { background: #FF8F22; }
+  .cal-form-input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--mist);
+    border-radius: 6px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--fog);
+    box-sizing: border-box;
+  }
+  .cal-form-input:focus {
+    outline: none;
+    border-color: var(--teal-lt);
+    background: #fff;
+  }
+
   .coming-soon {
     flex: 1;
     display: flex;
@@ -984,7 +1076,53 @@
     .calendar-card { grid-column: 1; }
     .analytics-card { grid-column: 1; }
   }
+/* ── Strategy pages ── */
+.strategy-content { max-width: 920px; margin: 0 auto; font-family: var(--font-body); color: var(--ink); line-height: 1.6; padding: 0 4px 40px; }
+.strategy-content .lead { font-size: 15px; color: var(--ink); margin-bottom: 24px; padding: 16px 20px; background: var(--fog); border-left: 4px solid var(--orange); border-radius: 6px; }
+.strategy-content .governing { background: linear-gradient(135deg, var(--purple) 0%, var(--teal-dk) 100%); color: #fff; padding: 24px; border-radius: 10px; margin: 16px 0 28px; }
+.strategy-content .governing-label { font-family: var(--font-emph); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); margin-bottom: 6px; }
+.strategy-content .governing-headline { font-family: var(--font-emph); font-size: 22px; margin-bottom: 8px; }
+.strategy-content .governing-body { font-size: 14px; opacity: 0.9; }
+.strategy-content h2 { font-family: var(--font-emph); font-size: 20px; color: var(--teal-dk); margin: 32px 0 12px; padding-bottom: 8px; border-bottom: 2px solid var(--mist); }
+.strategy-content h3 { font-family: var(--font-emph); font-size: 15px; color: var(--purple); margin: 20px 0 8px; }
+.strategy-content p { margin: 0 0 12px; font-size: 14px; }
+.strategy-content ul { margin: 8px 0 16px; padding-left: 20px; font-size: 14px; }
+.strategy-content ul li { margin-bottom: 4px; }
+.strategy-content ol { margin: 8px 0 16px; padding-left: 20px; font-size: 14px; }
+.strategy-content ol li { margin-bottom: 6px; }
+.strategy-content .pillar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin: 16px 0 24px; }
+.strategy-content .pillar { background: #fff; border: 1px solid var(--mist); border-radius: 8px; padding: 16px; }
+.strategy-content .pillar-num { font-family: var(--font-emph); font-size: 11px; color: var(--orange); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+.strategy-content .pillar-title { font-family: var(--font-emph); font-size: 15px; color: var(--teal-dk); margin-bottom: 8px; }
+.strategy-content .pillar-body { font-size: 13px; color: #444; line-height: 1.5; }
+.strategy-content .pillar-body ul { padding-left: 18px; margin: 6px 0 0; font-size: 12.5px; }
+.strategy-content .pillar-cadence { display: inline-block; margin-top: 10px; font-family: var(--font-emph); font-size: 11px; padding: 3px 10px; background: var(--fog); color: var(--purple); border-radius: 12px; }
+.strategy-content .source-link { display: inline-block; margin-top: 28px; font-family: var(--font-emph); font-size: 13px; color: var(--teal-lt); text-decoration: none; padding: 8px 14px; border: 1px solid var(--teal-lt); border-radius: 6px; }
+.strategy-content .source-link:hover { background: var(--teal-lt); color: #fff; }
+.strategy-content .anchor-card { margin: 16px 0; padding: 18px; background: #fff; border: 1px solid var(--mist); border-radius: 8px; border-left: 4px solid var(--orange); }
+.strategy-content .anchor-date { font-family: var(--font-emph); font-size: 12px; color: var(--orange); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+.strategy-content .anchor-title { font-family: var(--font-emph); font-size: 16px; color: var(--teal-dk); margin-bottom: 8px; }
+.strategy-content .callout { background: #fff8eb; border-left: 4px solid var(--orange); padding: 14px 18px; margin: 16px 0; border-radius: 6px; font-size: 14px; }
+.strategy-content .callout-warn { background: #fff3f3; border-left-color: #e74c3c; }
+.strategy-content .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+.strategy-content .do, .strategy-content .dont { background: #fff; border: 1px solid var(--mist); border-radius: 8px; padding: 16px; }
+.strategy-content .do { border-top: 3px solid #2da06b; }
+.strategy-content .dont { border-top: 3px solid #e74c3c; }
+.strategy-content .do h4, .strategy-content .dont h4 { font-family: var(--font-emph); font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; margin: 0 0 10px; }
+.strategy-content .do h4 { color: #2da06b; }
+.strategy-content .dont h4 { color: #e74c3c; }
+.strategy-content .source-list { background: #fff; border: 1px solid var(--mist); border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+.strategy-content .source-list-title { font-family: var(--font-emph); font-size: 12px; color: var(--purple); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+.strategy-content .stub { padding: 80px 20px; text-align: center; color: #888; }
+.strategy-content .stub h2 { border: none; color: var(--purple); margin-bottom: 12px; }
+.strategy-content .stub p { font-size: 15px; max-width: 480px; margin: 0 auto; }
+
+@media (max-width: 720px) {
+  .strategy-content .do-dont { grid-template-columns: 1fr; }
+}
+
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/13.0.3/marked.min.js"></script>
 </head>
 <body>
 
@@ -1008,39 +1146,54 @@
   <!-- SIDEBAR NAV -->
   <nav class="sidebar">
     <div class="nav-section">
-      <div class="nav-section-label">Main</div>
+      <div class="nav-section-label">Monitor</div>
       <a class="nav-item active" data-page="home" onclick="navigate('home')">
         <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1L1 7v8h5v-5h4v5h5V7L8 1z"/></svg>
-        Daily Monitor
+        Daily Scan
       </a>
-      <a class="nav-item" data-page="home" onclick="navigate('home');setTimeout(()=>scrollToSection('calendar-preview-section'),100)">
-        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="3" width="14" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M1 7h14"/></svg>
-        Calendar Preview
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Strategy</div>
+      <a class="nav-item" data-page="strategy-overview" onclick="navigate('strategy-overview')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2"/></svg>
+        Overview
       </a>
-      <a class="nav-item" data-page="home" onclick="navigate('home');setTimeout(()=>scrollToSection('analytics-snapshot-section'),100)">
-        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M1 13l4-5 3 3 3-4 4 6H1z"/></svg>
-        Analysis Snapshot
+      <a class="nav-item" data-page="strategy-editorial" onclick="navigate('strategy-editorial')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M3 2h8l2 2v10H3z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 6h6M5 9h6M5 12h4" stroke="currentColor" stroke-width="1.2"/></svg>
+        Editorial
+      </a>
+      <a class="nav-item" data-page="strategy-policies" onclick="navigate('strategy-policies')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l6 3v5c0 4-3 6-6 6s-6-2-6-6V4l6-3z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        Policies
+      </a>
+      <a class="nav-item" data-page="strategy-guardrails" onclick="navigate('strategy-guardrails')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M2 5h12M2 11h12M5 2v12M11 2v12" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+        Guardrails
+      </a>
+      <a class="nav-item" data-page="strategy-comms-plan" onclick="navigate('strategy-comms-plan')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="2" y="3" width="12" height="10" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 7h6M5 10h4" stroke="currentColor" stroke-width="1.2"/></svg>
+        Q2/Q3 Comms Plan
       </a>
     </div>
 
     <div class="nav-section">
       <div class="nav-section-label">Workflow</div>
-      <a class="nav-item" data-page="content-bank" onclick="navigate('content-bank')">
-        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="3" width="14" height="2" rx="1"/><rect x="1" y="7" width="14" height="2" rx="1"/><rect x="1" y="11" width="9" height="2" rx="1"/></svg>
-        Content Bank
+      <a class="nav-item" data-page="posting-calendar" onclick="navigate('posting-calendar')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="3" width="14" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M1 7h14"/></svg>
+        Posting Calendar
       </a>
-
       <a class="nav-item" data-page="adm-conduit" onclick="navigate('adm-conduit')">
         <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 5h10M9 2l3 3-3 3"/><path d="M14 11H4M7 8l-3 3 3 3"/></svg>
         ADM Conduit
       </a>
+      <a class="nav-item" data-page="content-bank" onclick="navigate('content-bank')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="3" width="14" height="2" rx="1"/><rect x="1" y="7" width="14" height="2" rx="1"/><rect x="1" y="11" width="9" height="2" rx="1"/></svg>
+        Content Bank
+      </a>
       <a class="nav-item" data-page="live-post-tracker" onclick="navigate('live-post-tracker')">
         <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/></svg>
         Live Post Tracker
-      </a>
-      <a class="nav-item" data-page="repost-alert" onclick="navigate('repost-alert')">
-        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 2v8M5 7l3 3 3-3M3 13h10" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
-        Repost Alert
       </a>
       <a class="nav-item" data-page="ideation" onclick="navigate('ideation')">
         <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a5 5 0 00-3 9v2h6v-2a5 5 0 00-3-9zm-1 13h2v1H7v-1z"/></svg>
@@ -1050,25 +1203,17 @@
 
     <div class="nav-section">
       <div class="nav-section-label">Intelligence</div>
-      <a class="nav-item" data-page="analytics" onclick="navigate('analytics')">
-        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M1 13l4-5 3 3 3-4 4 6H1z"/></svg>
-        Analytics
-      </a>
       <a class="nav-item" data-page="content-calendar" onclick="navigate('content-calendar')">
         <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="3" width="14" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M1 7h14"/></svg>
         Content Calendar
       </a>
-      <a class="nav-item" data-page="strategy-2026" onclick="navigate('strategy-2026')">
-        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M2 12L6 8l3 3 5-7" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        2026 Strategy
+      <a class="nav-item" data-page="analytics" onclick="navigate('analytics')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M1 13l4-5 3 3 3-4 4 6H1z"/></svg>
+        Analytics
       </a>
       <a class="nav-item" data-page="hashtag-bank" onclick="navigate('hashtag-bank')">
         <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M3 4h10M3 8h10M3 12h10M6 1v14M10 1v14" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
         Hashtag Bank
-      </a>
-      <a class="nav-item" data-page="fundraising" onclick="navigate('fundraising')">
-        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4v8M5.5 6.5h3a1 1 0 010 2H5.5" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
-        Fundraising
       </a>
     </div>
 
@@ -1089,18 +1234,18 @@
     </div>
     <div style="flex:1"></div>
     <div style="padding: 16px; border-top: 1px solid var(--mist); font-size:0.688rem; color:var(--gray-400); font-family:var(--font-body); font-weight:500; letter-spacing:0.06em;">
-      v2.0 · EC Dashboard
+      v2.1 · EC Dashboard
     </div>
   </nav>
 
   <!-- MAIN -->
   <main class="main" id="main">
 
-    <!-- ══ HOME PAGE ══ -->
+    <!-- ══ DAILY SCAN PAGE ══ -->
     <div class="page active" id="page-home">
       <div class="page-header">
-        <div class="page-header-eyebrow">Daily Command Center</div>
-        <h1 class="page-header-title">Social Media Dashboard</h1>
+        <div class="page-header-eyebrow">Monitor</div>
+        <h1 class="page-header-title">Daily Scan</h1>
         <p class="page-header-desc">Monitor key accounts | Check the calendar | Check the analytics</p>
       </div>
       <div class="page-body">
@@ -1114,8 +1259,7 @@
               <span style="color:var(--teal-dk);font-family:var(--font-emph);font-weight:700;font-size:0.9rem;">Daily Monitor</span>
               </div>
               <div style="display:flex;gap:8px;align-items:center;">
-                <button class="monitor-btn monitor-btn-scan" onclick="startScan('full')">▶ Full Scan</button>
-                <button class="monitor-btn monitor-btn-quick" onclick="startScan('quick')">⚡ Quick</button>
+                <button class="monitor-btn monitor-btn-scan" onclick="runMorningScan()">&#9889; Run Morning Scan</button>
               </div>
             </div>
             <div class="card-body">
@@ -1128,30 +1272,46 @@
               </div>
               <div class="monitor-controls">
                 <button class="monitor-btn monitor-btn-filter active" onclick="filterAccounts('all', this)">All</button>
-                <button class="monitor-btn monitor-btn-filter" onclick="filterAccounts('Grantee', this)">Grantees</button>
-                <button class="monitor-btn monitor-btn-filter" onclick="filterAccounts('EC Leadership', this)">EC Leadership</button>
-                <button class="monitor-btn monitor-btn-filter" onclick="filterAccounts('CCAI', this)">CCAI</button>
+                <button class="monitor-btn monitor-btn-filter" onclick="filterAccounts('grantee', this)">Grantees</button>
+                <button class="monitor-btn monitor-btn-filter" onclick="filterAccounts('funder', this)">Funders</button>
+                <button class="monitor-btn monitor-btn-filter" onclick="filterAccounts('person', this)">People</button>
               </div>
 
-              <!-- SCAN BRIEFING PANEL -->
+              <!-- MORNING SCAN PANEL -->
               <div id="scan-panel" style="display:none;background:#fff;border:2px solid var(--orange);border-radius:var(--r-lg);padding:var(--sp-lg);margin-bottom:var(--sp-md);">
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--sp-md);">
-                  <strong style="font-family:var(--font-emph);color:var(--orange);font-size:0.95rem;">☀ Daily Scan — Review Queue</strong>
-                  <div style="display:flex;gap:var(--sp-sm);align-items:center;">
-                    <span id="scan-timestamp" style="font-size:0.75rem;color:var(--gray-400);"></span>
-                    <button onclick="document.getElementById('scan-panel').style.display='none'" style="background:none;border:none;color:var(--gray-400);cursor:pointer;font-size:1.2rem;line-height:1;">×</button>
+                  <strong style="font-family:var(--font-emph);color:var(--orange);font-size:0.95rem;">&#9889; Morning Scan</strong>
+                  <button onclick="document.getElementById('scan-panel').style.display='none'" style="background:none;border:none;color:var(--gray-400);cursor:pointer;font-size:1.2rem;line-height:1;">&times;</button>
+                </div>
+                <div style="background:#f0faf8;border:1px solid var(--teal-lt);border-radius:6px;padding:var(--sp-md);margin-bottom:var(--sp-md);">
+                  <strong style="font-family:var(--font-emph);color:var(--teal-dk);font-size:0.85rem;">&#10003; Prompt copied to clipboard</strong>
+                  <div style="font-size:0.8rem;color:var(--ink);margin-top:4px;">Paste it into the Claude Chrome extension to begin scan. When Claude returns the markdown brief, paste it below and click Save Brief.</div>
+                </div>
+                <div>
+                  <div style="font-family:var(--font-emph);font-size:0.75rem;color:var(--gray-500);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Paste briefing here after extension scan completes</div>
+                  <textarea id="scan-brief-input" style="width:100%;box-sizing:border-box;height:180px;border:1px solid var(--mist);border-radius:6px;padding:8px;font-family:var(--font-body);font-size:0.78rem;color:var(--ink);resize:vertical;" placeholder="# Morning Scan — May 12, 2026&#10;**Generated:** ..."></textarea>
+                  <div style="display:flex;gap:8px;margin-top:8px;align-items:center;">
+                    <button onclick="saveBrief()" style="background:var(--orange);color:#fff;border:none;border-radius:6px;padding:6px 14px;font-family:var(--font-emph);font-size:0.8rem;cursor:pointer;">Save Brief</button>
+                    <span id="scan-submit-status" style="font-size:0.78rem;color:var(--gray-400);"></span>
                   </div>
                 </div>
-                <div id="scan-progress" style="display:none;margin-bottom:var(--sp-md);">
-                  <div style="background:var(--mist);border-radius:4px;height:6px;overflow:hidden;">
-                    <div id="scan-progress-bar" style="background:var(--orange);height:100%;width:0%;transition:width 0.4s;"></div>
-                  </div>
-                  <div id="scan-status-text" style="font-size:0.8rem;color:var(--gray-400);margin-top:var(--sp-xs);"></div>
-                </div>
-                <div id="scan-results" style="font-size:0.875rem;line-height:1.7;color:var(--ink);"></div>
               </div>
 
               <div class="account-grid" id="account-grid"></div>
+
+              <!-- LATEST BRIEF -->
+              <div id="latest-brief-section" style="margin-top:var(--sp-md);padding:var(--sp-md);background:var(--fog);border-radius:var(--r-md);border:1px solid var(--mist);">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--sp-sm);">
+                  <div>
+                    <strong style="font-family:var(--font-emph);color:var(--teal-dk);font-size:0.85rem;">Latest Brief</strong>
+                    <span id="latest-brief-when" style="margin-left:8px;color:var(--gray-400);font-size:0.78rem;"></span>
+                  </div>
+                  <a id="latest-brief-archive" onclick="openBriefArchive()" style="font-size:0.75rem;color:var(--teal);text-decoration:none;cursor:pointer;display:none;">View archive &rarr;</a>
+                </div>
+                <div id="latest-brief-body" style="font-size:0.82rem;line-height:1.6;color:var(--ink);">
+                  <div style="color:var(--gray-400);font-size:0.78rem;">No brief yet. Click Run Morning Scan to generate one.</div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -1211,10 +1371,13 @@
 
     <!-- ══ IDEATION ══ -->
     <div class="page" id="page-ideation">
-      <div class="page-header">
-        <div class="page-header-eyebrow">Content Workflow</div>
-        <h1 class="page-header-title">Ideation <em>/ Storehouse</em></h1>
-        <p class="page-header-desc">Assets, inspiration, and draft ideas — all in one place.</p>
+      <div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:var(--sp-md);">
+        <div>
+          <div class="page-header-eyebrow">Content Workflow</div>
+          <h1 class="page-header-title">Ideation <em>/ Storehouse</em></h1>
+          <p class="page-header-desc">EC creative assets, post concepts, photos, graphics, and final posts — live from Google Drive.</p>
+        </div>
+        <a href="https://drive.google.com/drive/folders/1UZ0r3ohAd7bCrCv9Mz0xaYBEAFgiW9RI?usp=sharing" target="_blank" style="background:var(--teal-dk);color:white;border:none;border-radius:var(--r-md);padding:8px 16px;font-size:0.82rem;font-family:var(--font-body);font-weight:600;text-decoration:none;flex-shrink:0;margin-top:4px;">Open in Drive →</a>
       </div>
 
       <!-- Ideation Tab Bar -->
@@ -1227,22 +1390,16 @@
       <!-- TAB: ASSETS (Google Drive embed) -->
       <div class="idea-panel active" id="idea-assets">
         <div style="background:var(--fog);border-bottom:1px solid var(--mist);padding:12px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-shrink:0;">
-          <div style="font-size:0.8rem;color: var(--gray-500);">
-            <strong style="color:var(--ink);">Google Drive</strong> — your live asset library. Images, logos, fonts, video, audio.
+          <div style="font-size:0.8rem;color:var(--gray-500);">
+            <strong style="color:var(--ink);">!EC Ideation</strong> — assets, post concepts, photos, graphics, and final posts.
+            <span style="margin-left:8px;font-size:0.75rem;color:var(--gray-400);">If the folder is blank, sign into Google Drive in another tab first.</span>
           </div>
           <div style="display:flex;gap:8px;align-items:center;">
-            <input id="drive-url-input" type="text" placeholder="Paste Google Drive folder URL…" style="font-size:0.78rem;padding:6px 12px;border:1px solid var(--mist);border-radius:4px;width:320px;font-family: var(--font-body);color:var(--ink);">
-            <button onclick="setDriveUrl()" style="background:var(--teal);color:var(--white);border:none;padding:6px 14px;border-radius:4px;font-size:0.78rem;cursor:pointer;font-weight:600;">Load</button>
+            <a href="https://drive.google.com/drive/folders/1UZ0r3ohAd7bCrCv9Mz0xaYBEAFgiW9RI?usp=sharing" target="_blank" style="font-size:0.75rem;color:var(--teal-lt);font-family:var(--font-body);font-weight:600;text-decoration:none;white-space:nowrap;">Open in Drive →</a>
           </div>
         </div>
         <div style="flex:1;position:relative;" id="drive-embed-wrap">
-          <div id="drive-placeholder" style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;padding:60px;color:#a0aec0;min-height:400px;">
-            <svg width="56" height="56" viewBox="0 0 56 56" fill="none"><path d="M8 42L20 20l8 14 8-10 12 18H8z" fill="#e2e8f0"/><circle cx="38" cy="16" r="8" fill="#e2e8f0"/></svg>
-            <div style="font-family:var(--font-sub);font-size:1.3rem;color: var(--gray-500);">Connect your Drive folder</div>
-            <div style="font-size:0.82rem;text-align:center;max-width:340px;line-height:1.6;">Paste a Google Drive folder URL above to embed your asset library — images, logos, fonts, video clips, and audio files.</div>
-            <div style="font-size:0.75rem;color:#b0bec5;text-align:center;max-width:300px;line-height:1.5;">Tip: Make sure the folder is shared with "Anyone with the link can view" so all team members can access it.</div>
-          </div>
-          <iframe id="drive-iframe" style="display:none;width:100%;height:100%;min-height:600px;border:none;" allowfullscreen></iframe>
+          <iframe id="drive-iframe" src="https://drive.google.com/embeddedfolderview?id=1UZ0r3ohAd7bCrCv9Mz0xaYBEAFgiW9RI#list" style="width:100%;height:calc(100vh - 280px);min-height:500px;border:none;" allowfullscreen></iframe>
         </div>
       </div>
 
@@ -1307,6 +1464,18 @@
         </div>
       </div>
 
+    </div>
+
+    <!-- ══ POSTING CALENDAR ══ -->
+    <div class="page" id="page-posting-calendar">
+      <div class="page-header">
+        <div class="page-header-eyebrow">Workflow</div>
+        <h1 class="page-header-title">Posting Calendar</h1>
+        <p class="page-header-desc">Live posting calendar — what's planned, what's posted, what's in concept.</p>
+      </div>
+      <div class="placeholder-page">
+        <iframe class="sheet-embed" src="https://docs.google.com/document/d/1eVIUa5RXjGr1TLYsGmyyKkYfUXLqcOMEY3nEEWV7Kk4/preview?tab=t.6p0ef84vt5ue" title="Posting Calendar" style="border:none;"></iframe>
+      </div>
     </div>
 
     <!-- ══ ADM CONDUIT ══ -->
@@ -1501,17 +1670,6 @@
     </div>
 
     <!-- ══ REPOST ALERT ══ -->
-    <div class="page" id="page-repost-alert">
-      <div class="page-header">
-        <div class="page-header-eyebrow">Live Post Tracker → Repost Alert</div>
-        <h1 class="page-header-title">Repost Alert</h1>
-        <p class="page-header-desc">Alert Toby, Tisha & leadership to repost. Pre-written copy ready to send.</p>
-      </div>
-      <div class="placeholder-page">
-        <iframe class="sheet-embed" src="https://docs.google.com/spreadsheets/d/1bii8rxNq3JVJ8E_diHpVQaWr2tLSTmMCkjPYq6u8qYM/edit?gid=1756250426&single=true&widget=true&headers=false" title="Repost Alert"></iframe>
-      </div>
-    </div>
-
     
     <!-- ══ LIVE POST TRACKER ══ -->
     <div class="page" id="page-live-post-tracker">
@@ -1837,23 +1995,175 @@
       <div class="page-header">
         <div class="page-header-eyebrow">Intelligence</div>
         <h1 class="page-header-title">Content Calendar</h1>
-        <p class="page-header-desc">Year-round event planning. Strategic angles, tiers, audiences — all mapped.</p>
+        <p class="page-header-desc">Year-round content events, observances, and strategic moments.</p>
       </div>
-      <div class="placeholder-page">
-        <iframe class="sheet-embed" src="https://calendar.google.com/calendar/embed?src=c_5d5ae908952c9f19307339ad9c318a05c2d13bd61e658d46aee37efa7149af8f%40group.calendar.google.com&ctz=America%2FLos_Angeles&mode=MONTH&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=0&showCalendars=0&showTz=0" title="Content Calendar" style="border:none;"></iframe>
+      <div class="placeholder-page" style="padding:0 24px 24px;">
+
+        <!-- Calendar Controls -->
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+          <button onclick="calNav(-1)" style="background:var(--purple);color:#fff;border:none;border-radius:6px;padding:6px 14px;cursor:pointer;font-family:var(--font-body);font-size:13px;">&#8592;</button>
+          <span id="cal-month-label" style="font-family:var(--font-emph);font-size:18px;color:var(--teal-dk);min-width:180px;text-align:center;"></span>
+          <button onclick="calNav(1)" style="background:var(--purple);color:#fff;border:none;border-radius:6px;padding:6px 14px;cursor:pointer;font-family:var(--font-body);font-size:13px;">&#8594;</button>
+          <button onclick="calToday()" style="background:var(--orange);color:#fff;border:none;border-radius:6px;padding:6px 14px;cursor:pointer;font-family:var(--font-body);font-size:13px;margin-left:4px;">Today</button>
+          <button onclick="calOpenAdd()" style="background:var(--teal-lt);color:#fff;border:none;border-radius:6px;padding:6px 16px;cursor:pointer;font-family:var(--font-emph);font-size:13px;margin-left:4px;">+ Add Event</button>
+          <button onclick="calShowUpcoming()" style="background:var(--purple);color:#fff;border:none;border-radius:6px;padding:6px 16px;cursor:pointer;font-family:var(--font-emph);font-size:13px;margin-left:4px;">What's Coming Up</button>
+          <!-- Filter buttons -->
+          <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;">
+            <button onclick="calFilter('all')" id="filter-all" class="cal-filter-btn active-filter">All</button>
+            <button onclick="calFilter('Global Observance')" id="filter-Global Observance" class="cal-filter-btn">Global Observance</button>
+            <button onclick="calFilter('Policy Moment')" id="filter-Policy Moment" class="cal-filter-btn">Policy Moment</button>
+            <button onclick="calFilter('Energy Industry Event')" id="filter-Energy Industry Event" class="cal-filter-btn">Industry Event</button>
+            <button onclick="calFilter('Development / NGO Event')" id="filter-Development / NGO Event" class="cal-filter-btn">NGO Event</button>
+          </div>
+        </div>
+
+        <!-- Calendar Grid -->
+        <div id="cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;"></div>
+
+        <!-- Upcoming Events Panel -->
+        <div id="cal-upcoming" style="display:none;margin-top:16px;background:#fff;border:1px solid var(--mist);border-radius:10px;padding:20px;max-width:760px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <div style="font-family:var(--font-emph);font-size:18px;color:var(--teal-dk);">What's Coming Up — Next 45 Days</div>
+            <button onclick="document.getElementById('cal-upcoming').style.display='none'" style="background:none;border:none;cursor:pointer;font-size:18px;color:#999;">&#x2715;</button>
+          </div>
+          <div id="cal-upcoming-list"></div>
+        </div>
+
+        <!-- Event Detail Panel -->
+        <div id="cal-detail" style="display:none;margin-top:16px;background:#fff;border:1px solid var(--mist);border-radius:10px;padding:20px;max-width:640px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div style="flex:1;">
+              <div id="cal-detail-date" style="font-family:var(--font-emph);font-size:12px;color:var(--orange);text-transform:uppercase;margin-bottom:4px;"></div>
+              <div id="cal-detail-title" style="font-family:var(--font-emph);font-size:18px;color:var(--teal-dk);margin-bottom:8px;"></div>
+              <span id="cal-detail-cat" style="display:inline-block;font-size:11px;padding:3px 10px;border-radius:20px;color:#fff;margin-bottom:12px;"></span>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button id="cal-detail-edit-btn" onclick="calOpenEdit()" style="background:var(--teal-lt);color:#fff;border:none;border-radius:6px;padding:5px 12px;cursor:pointer;font-family:var(--font-body);font-size:12px;">Edit</button>
+              <button id="cal-detail-delete-btn" onclick="calDeleteEvent()" style="background:#e74c3c;color:#fff;border:none;border-radius:6px;padding:5px 12px;cursor:pointer;font-family:var(--font-body);font-size:12px;">Delete</button>
+              <button onclick="document.getElementById('cal-detail').style.display='none'" style="background:none;border:none;cursor:pointer;font-size:18px;color:#999;margin-left:4px;">&#x2715;</button>
+            </div>
+          </div>
+          <div id="cal-detail-angle" style="font-family:var(--font-body);font-size:14px;color:var(--ink);margin-bottom:8px;"></div>
+          <div id="cal-detail-notes" style="font-family:var(--font-body);font-size:13px;color:#666;"></div>
+        </div>
+
+        <!-- Add / Edit Event Modal -->
+        <div id="cal-modal-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center;">
+          <div style="background:#fff;border-radius:12px;padding:28px;width:520px;max-width:95vw;box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+              <div id="cal-modal-title" style="font-family:var(--font-emph);font-size:18px;color:var(--teal-dk);">Add Event</div>
+              <button onclick="calCloseModal()" style="background:none;border:none;cursor:pointer;font-size:20px;color:#999;">&#x2715;</button>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div>
+                <label style="font-family:var(--font-emph);font-size:12px;color:var(--teal-dk);display:block;margin-bottom:4px;">MONTH</label>
+                <select id="cal-form-month" class="cal-form-input">
+                  <option value="1">January</option><option value="2">February</option><option value="3">March</option>
+                  <option value="4">April</option><option value="5">May</option><option value="6">June</option>
+                  <option value="7">July</option><option value="8">August</option><option value="9">September</option>
+                  <option value="10">October</option><option value="11">November</option><option value="12">December</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-family:var(--font-emph);font-size:12px;color:var(--teal-dk);display:block;margin-bottom:4px;">DAY</label>
+                <input id="cal-form-day" type="number" min="1" max="31" placeholder="e.g. 15" class="cal-form-input">
+              </div>
+              <div style="grid-column:1/-1;">
+                <label style="font-family:var(--font-emph);font-size:12px;color:var(--teal-dk);display:block;margin-bottom:4px;">EVENT / POST TITLE</label>
+                <input id="cal-form-title" type="text" placeholder="Event name" class="cal-form-input">
+              </div>
+              <div style="grid-column:1/-1;">
+                <label style="font-family:var(--font-emph);font-size:12px;color:var(--teal-dk);display:block;margin-bottom:4px;">CATEGORY</label>
+                <select id="cal-form-cat" class="cal-form-input">
+                  <option>Global Observance</option>
+                  <option>Policy Moment</option>
+                  <option>Energy Industry Event</option>
+                  <option>Development / NGO Event</option>
+                </select>
+              </div>
+              <div style="grid-column:1/-1;">
+                <label style="font-family:var(--font-emph);font-size:12px;color:var(--teal-dk);display:block;margin-bottom:4px;">STRATEGIC ANGLE</label>
+                <input id="cal-form-angle" type="text" placeholder="Strategic angle" class="cal-form-input">
+              </div>
+              <div style="grid-column:1/-1;">
+                <label style="font-family:var(--font-emph);font-size:12px;color:var(--teal-dk);display:block;margin-bottom:4px;">NOTES</label>
+                <input id="cal-form-notes" type="text" placeholder="Notes" class="cal-form-input">
+              </div>
+              <div style="grid-column:1/-1;display:flex;align-items:center;gap:8px;">
+                <input id="cal-form-vary" type="checkbox">
+                <label for="cal-form-vary" style="font-family:var(--font-body);font-size:13px;color:var(--ink);cursor:pointer;">Approximate date (varies by year)</label>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:20px;justify-content:flex-end;">
+              <button onclick="calCloseModal()" style="background:var(--fog);color:var(--ink);border:1px solid var(--mist);border-radius:6px;padding:8px 20px;cursor:pointer;font-family:var(--font-body);font-size:13px;">Cancel</button>
+              <button onclick="calSaveEvent()" style="background:var(--teal-dk);color:#fff;border:none;border-radius:6px;padding:8px 20px;cursor:pointer;font-family:var(--font-emph);font-size:13px;">Save Event</button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
     <!-- ══ 2026 STRATEGY ══ -->
-    <div class="page" id="page-strategy-2026">
+    <!-- ══ STRATEGY: OVERVIEW ══ -->
+    <div class="page" id="page-strategy-overview">
       <div class="page-header">
-        <div class="page-header-eyebrow">Intelligence</div>
-        <h1 class="page-header-title">2026 Strategy</h1>
-        <p class="page-header-desc">Energy Corps social media strategy and objectives for 2026.</p>
+        <div class="page-header-eyebrow">Strategy</div>
+        <h1 class="page-header-title">Overview</h1>
+        <p class="page-header-desc">Positioning, governing narrative, and strategic priorities for 2026.</p>
       </div>
       <div class="placeholder-page">
-        <iframe class="sheet-embed" src="https://docs.google.com/document/d/1BX9MacWCaKUBenz_frQxc_zQwh3sOKD7AtnYUWyuVys/preview" title="2026 Strategy" style="border:none;"></iframe>
+        <iframe class="sheet-embed" src="https://docs.google.com/document/d/1eVIUa5RXjGr1TLYsGmyyKkYfUXLqcOMEY3nEEWV7Kk4/preview?tab=t.0" title="Strategy — Overview" style="border:none;"></iframe>
       </div>
+    </div>
+
+    <!-- ══ STRATEGY: EDITORIAL ══ -->
+    <div class="page" id="page-strategy-editorial">
+      <div class="page-header">
+        <div class="page-header-eyebrow">Strategy</div>
+        <h1 class="page-header-title">Editorial</h1>
+        <p class="page-header-desc">Editorial lanes, posting cadence, and Q2/Q3 anchor moments.</p>
+      </div>
+            <div class="placeholder-page">
+        <iframe class="sheet-embed" src="https://docs.google.com/document/d/1eVIUa5RXjGr1TLYsGmyyKkYfUXLqcOMEY3nEEWV7Kk4/preview?tab=t.31cjelt41dzg" title="Strategy &mdash; Editorial" style="border:none;"></iframe>
+      </div>
+    </div>
+
+    <!-- ══ STRATEGY: POLICIES ══ -->
+    <div class="page" id="page-strategy-policies">
+      <div class="page-header">
+        <div class="page-header-eyebrow">Strategy</div>
+        <h1 class="page-header-title">Policies</h1>
+        <p class="page-header-desc">Corps principles, approved repost sources, voice and tone.</p>
+      </div>
+            <div class="placeholder-page">
+        <iframe class="sheet-embed" src="https://docs.google.com/document/d/1eVIUa5RXjGr1TLYsGmyyKkYfUXLqcOMEY3nEEWV7Kk4/preview?tab=t.3cfe9noaz68v" title="Strategy &mdash; Policies" style="border:none;"></iframe>
+      </div>
+    </div>
+
+    <!-- ══ STRATEGY: GUARDRAILS ══ -->
+    <div class="page" id="page-strategy-guardrails">
+      <div class="page-header">
+        <div class="page-header-eyebrow">Strategy</div>
+        <h1 class="page-header-title">Guardrails</h1>
+        <p class="page-header-desc">Operating policy for LinkedIn. Non-partisan, energy-agnostic positioning.</p>
+      </div>
+      <div class="placeholder-page">
+        <iframe class="sheet-embed" src="https://docs.google.com/document/d/1eVIUa5RXjGr1TLYsGmyyKkYfUXLqcOMEY3nEEWV7Kk4/preview?tab=t.562410gzb063" title="Strategy &mdash; Guardrails" style="border:none;"></iframe>
+      </div>
+    </div>
+
+    <!-- ══ STRATEGY: Q2/Q3 COMMS PLAN ══ -->
+    <div class="page" id="page-strategy-comms-plan">
+      <div class="page-header">
+        <div class="page-header-eyebrow">Strategy</div>
+        <h1 class="page-header-title">Q2/Q3 Comms Plan</h1>
+        <p class="page-header-desc">Quarter-by-quarter execution plan tied to anchor moments and editorial lanes.</p>
+      </div>
+            <div class="placeholder-page">
+        <iframe class="sheet-embed" src="https://docs.google.com/document/d/1eVIUa5RXjGr1TLYsGmyyKkYfUXLqcOMEY3nEEWV7Kk4/preview" title="Strategy &mdash; Q2/Q3 Comms Plan" style="border:none;"></iframe>
+      </div>
+    </div>
     </div>
 
     <!-- ══ HASHTAG BANK ══ -->
@@ -1916,24 +2226,21 @@
       </div>
     </div>
 
-    <!-- ══ FUNDRAISING ══ -->
-    <div class="page" id="page-fundraising">
-      <div class="page-header">
-        <div class="page-header-eyebrow">Intelligence</div>
-        <h1 class="page-header-title">Fundraising</h1>
-        <p class="page-header-desc">Track donor relationships, grant pipelines, and fundraising activity.</p>
-      </div>
-      <div class="coming-soon">
-        <svg class="coming-soon-icon" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="28" stroke="#e2e8f0" stroke-width="2"/><path d="M32 16v32M22 24h13a5 5 0 010 10H22" stroke="#e2e8f0" stroke-width="2" stroke-linecap="round"/></svg>
-        <h3>Fundraising Dashboard</h3>
-        <p>Donor relationships, grant pipelines, and fundraising activity tracking. Coming in Phase 2.</p>
-      </div>
-    </div>
-
   </main>
 </div>
 
 <div id="toast"></div>
+
+<!-- BRIEF ARCHIVE MODAL -->
+<div id="brief-archive-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:12px;padding:24px;width:680px;max-width:95vw;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-shrink:0;">
+      <div style="font-family:var(--font-emph);font-size:18px;color:var(--teal-dk);">Brief Archive</div>
+      <button onclick="closeBriefArchive()" style="background:none;border:none;cursor:pointer;font-size:20px;color:#999;">&#x2715;</button>
+    </div>
+    <div id="brief-archive-list" style="overflow-y:auto;flex:1;"></div>
+  </div>
+</div>
 
 <script>
 // ── NAVIGATION ──
@@ -1975,28 +2282,159 @@ function toast(msg) {
 }
 
 // ── MONITOR DAILY ACCOUNTS ──
-const ACCOUNTS = [
-  { id:'bhlf', name:'Bettering Human Lives Foundation', rel:'Grantee', linkedin:'https://www.linkedin.com/company/bettering-human-lives-foundation/posts/?feedView=all' },
-  { id:'eed',  name:'EED Research Institute', rel:'Grantee', linkedin:'https://www.linkedin.com/company/eed-research-institute/' },
-  { id:'gig',  name:'Gigawatt Impact', rel:'Grantee', linkedin:null },
-  { id:'iea',  name:'IEA Ghana', rel:'Grantee', linkedin:'https://www.linkedin.com/company/iea-ghana/' },
-  { id:'innafrica', name:'Innovation Africa', rel:'Grantee', linkedin:'https://www.linkedin.com/company/innovation-africa/' },
-  { id:'sea',  name:'Switch Energy Alliance', rel:'Grantee', linkedin:null },
-  { id:'aher', name:'Andrew Herscowitz', rel:'EC Leadership', linkedin:'https://www.linkedin.com/in/andrew-herscowitz-32688792/' },
-  { id:'trice', name:'Toby Rice', rel:'EC Leadership', linkedin:'https://www.linkedin.com/in/toby-z-rice-a6738186/' },
-  { id:'stinker', name:'Scott Tinker', rel:'EC Leadership', linkedin:'https://www.linkedin.com/in/tinkerenergyassociates/' },
-  { id:'mjhat', name:'Manaav Jhatakia', rel:'EC Leadership', linkedin:'https://www.linkedin.com/in/mjhatakia/' },
-  { id:'jmanch', name:'Joe Manchin', rel:'EC Leadership', linkedin:null },
-  { id:'mdioha', name:'Michael Dioha', rel:'EC Leadership', linkedin:'https://www.linkedin.com/in/michael-dioha-phd-563aa5b8/' },
-  { id:'mhoward', name:'Mike Howard', rel:'EC Leadership', linkedin:'https://www.linkedin.com/in/mike-howard-76768624b/' },
-  { id:'wvanloh', name:'Wil VanLoh', rel:'EC Leadership', linkedin:'https://www.linkedin.com/in/wilvanloh/' },
-  { id:'cca',  name:'Clean Cooking Alliance', rel:'CCAI', linkedin:'https://www.linkedin.com/company/cleancookingalliance/' },
-  { id:'rfcap', name:'RF Capital', rel:'CCAI', linkedin:'https://www.linkedin.com/company/rfcatalyticcapital/' },
-  { id:'geap', name:'Global Energy Alliance', rel:'CCAI', linkedin:'https://www.linkedin.com/company/globalenergyalliance/' },
-  { id:'rock', name:'Rockefeller Foundation', rel:'CCAI', linkedin:'https://www.linkedin.com/company/the-rockefeller-foundation/' },
-  { id:'e4g',  name:'Energy For Growth Hub', rel:'Key/Potential', linkedin:'https://www.linkedin.com/company/the-energy-for-growth-hub/' },
-  { id:'wm',   name:'Wood Mackenzie', rel:'Publications', linkedin:'https://www.linkedin.com/company/wood-mackenzie/' },
+// rel:    'grantee' | 'funder' | 'person'
+// repost: true  = we may repost their content
+// repost: false = scan-only (never repost)
+// url: null     = placeholder, skipped at scan time
+const MONITOR_SOURCES = [
+  // GRANTEES (Cat 1) — repost allowed
+  { id: 'bhlf',  name: 'Bettering Human Lives Foundation', rel: 'grantee', url: 'https://www.linkedin.com/company/bettering-human-lives-foundation/', repost: true },
+  { id: 'cca',   name: 'Clean Cooking Alliance',           rel: 'grantee', url: 'https://www.linkedin.com/company/cleancookingalliance/', repost: true },
+  { id: 'eri',   name: 'EED Research Institute',           rel: 'grantee', url: 'https://www.linkedin.com/company/eed-advisory/', repost: true },
+  { id: 'gw',    name: 'Gigawatt Global',                  rel: 'grantee', url: 'https://www.linkedin.com/company/gigawattglobal/', repost: true },
+  { id: 'iea',   name: 'IEA Ghana',                        rel: 'grantee', url: null, repost: true },
+  { id: 'inn',   name: 'Innovation: Africa',               rel: 'grantee', url: 'https://www.linkedin.com/company/innovation-africa/', repost: true },
+  { id: 'sea',   name: 'Switch Energy Alliance',           rel: 'grantee', url: 'https://www.linkedin.com/company/switch-energy-alliance/', repost: true },
+
+  // FOUNDING FUNDERS (Cat 2) — repost allowed
+  { id: 'bpf',   name: 'Boardwalk Pipeline Foundation',                rel: 'funder', url: null, repost: true },
+  { id: 'rfcc',  name: 'RF Catalytic Capital',                         rel: 'funder', url: 'https://www.linkedin.com/company/rf-catalytic-capital/', repost: true },
+  { id: 'se',    name: 'Spotlight Energy',                             rel: 'funder', url: null, repost: true },
+  { id: 'mmhff', name: 'Meredith and Mike Howard Family Foundation',   rel: 'funder', url: null, repost: true },
+  { id: 'rff',   name: 'Rice Family Foundation',                       rel: 'funder', url: null, repost: true },
+
+  // PEOPLE — scan only, never repost
+  { id: 'ah',    name: 'Andrew Herscowitz', rel: 'person', url: 'https://www.linkedin.com/in/andrew-herscowitz/',     repost: false },
+  { id: 'tr',    name: 'Toby Rice',         rel: 'person', url: 'https://www.linkedin.com/in/toby-rice-70891429/',    repost: false },
+  { id: 'st',    name: 'Scott Tinker',      rel: 'person', url: 'https://www.linkedin.com/in/scotttinker/',           repost: false },
+  { id: 'mj',    name: 'Manaav Jhatakia',   rel: 'person', url: 'https://www.linkedin.com/in/manaavjhatakia/',        repost: false },
+  { id: 'jm',    name: 'Joe Manchin',       rel: 'person', url: 'https://www.linkedin.com/in/senjoemanchin/',         repost: false },
+  { id: 'mh',    name: 'Mike Howard',       rel: 'person', url: 'https://www.linkedin.com/in/mikehowardceo/',         repost: false },
+  { id: 'wvl',   name: 'Wil VanLoh',        rel: 'person', url: 'https://www.linkedin.com/in/wilvanloh/',             repost: false },
 ];
+
+// Keep ACCOUNTS as alias so existing renderAccounts() code doesn't break
+const ACCOUNTS = MONITOR_SOURCES.map(s => ({ ...s, linkedin: s.url }));
+
+const SCAN_KEYWORDS = {
+  brand: ['Energy Corps', 'EnergyCorps'],
+  partners: [
+    'Bettering Human Lives Foundation', 'BHLF',
+    'Switch Energy Alliance', 'SEA',
+    'Innovation: Africa',
+    'IEA Ghana',
+    'Gigawatt Global', 'Gigawatt Impact',
+    'EED Research Institute', 'ERI', 'EEDRI',
+    'Clean Cooking Alliance', 'CCA',
+    'Boardwalk Pipeline Foundation',
+    'RF Catalytic Capital', 'RFCC',
+    'Spotlight Energy',
+    'Meredith and Mike Howard Family Foundation',
+    'Rice Family Foundation',
+    'NRECA International', 'MCC', 'ExIm Bank'
+  ],
+  mission: [
+    'energy access',
+    'energy poverty',
+    'energy prosperity',
+    'modern energy',
+    'modern energy at scale',
+    '50-50-50', '#505050',
+    'human flourishing',
+    'global energy poverty',
+    'prosperity through energy',
+    'energy is opportunity'
+  ],
+  tracked: [
+    'Andrew Herscowitz',
+    'Toby Rice',
+    'Scott Tinker',
+    'Mike Howard',
+    'Wil VanLoh',
+    'Joe Manchin'
+  ],
+  redFlag: [
+    'fight against',
+    'war on',
+    'real climate solutions',
+    'anti-science',
+    'common-sense'
+  ]
+};
+
+function buildScanPrompt(lastSeenState) {
+  lastSeenState = lastSeenState || {};
+  var withUrl = MONITOR_SOURCES.filter(function(s) { return s.url; });
+  var noUrl   = MONITOR_SOURCES.filter(function(s) { return !s.url; });
+  var personCount = MONITOR_SOURCES.filter(function(s) { return s.rel === 'person'; }).length;
+  var nowIso = new Date().toISOString();
+
+  var sourcesScan = withUrl.map(function(s) {
+    var since = lastSeenState[s.id] || 'first scan';
+    var repost = s.rel === 'person' ? 'no' : 'yes';
+    return '  - ' + s.name + ' (' + s.rel + ') — ' + s.url
+      + '\n    Since: ' + since
+      + '\n    Repost allowed: ' + repost;
+  }).join('\n');
+
+  var sourcesSkip = noUrl.map(function(s) {
+    return '  - ' + s.name + ' (' + s.rel + ')';
+  }).join('\n');
+
+  return [
+    'MORNING SCAN — Energy Corps',
+    'Generated: ' + nowIso,
+    'Total sources to scan: ' + withUrl.length,
+    '',
+    'You are running a Morning Scan on behalf of Energy Corps, an energy-poverty nonprofit. Your job: open each source URL below, review LinkedIn activity since the lastSeen timestamp for that source, and produce a structured briefing in markdown.',
+    '',
+    'VOICE — fact-led, terse, observational. Each entry: who posted, what about, one detail. No editorializing, no marketing language, no opinion. Example:',
+    '"RF Catalytic Capital announced a $120M minigrid deployment commitment across Sub-Saharan Africa, partnering with 4 country governments. [link]"',
+    'Not:',
+    '"Exciting news from RF Catalytic Capital today! Their landmark announcement signals a major shift..."',
+    '',
+    'SOURCES TO SCAN:',
+    sourcesScan,
+    '',
+    'SOURCES TO SKIP (no URL available):',
+    sourcesSkip,
+    '',
+    'FLAGGING KEYWORDS — any post mentioning these gets surfaced in the FLAGGED section:',
+    'Brand: ' + SCAN_KEYWORDS.brand.join(', '),
+    'Partners: ' + SCAN_KEYWORDS.partners.join(', '),
+    'Mission keywords: ' + SCAN_KEYWORDS.mission.join(', '),
+    'Tracked individuals: ' + SCAN_KEYWORDS.tracked.join(', '),
+    '',
+    'RED-FLAG TERMS — flag with caution note, do NOT recommend for repost:',
+    SCAN_KEYWORDS.redFlag.join(', '),
+    '',
+    'INDIVIDUAL ACCOUNTS NOTE: For the ' + personCount + ' sources with rel=\'person\', we scan for awareness but EC policy is never to repost from personal accounts. Flag any EC mentions for visibility but mark "for awareness only — do not repost."',
+    '',
+    'OUTPUT FORMAT (markdown):',
+    '',
+    '# Morning Scan — [date readable]',
+    '**Generated:** [time]',
+    '**Window:** [earliest source lastSeen] to now',
+    '**Sources scanned:** [N] · **Active:** [M] · **Flagged:** [K]',
+    '',
+    '## FLAGGED ([K])',
+    '- **[Source name]** — [one-line summary]. *[reason for flag — keyword(s) matched]*',
+    '  [link]',
+    '',
+    '## NEW POSTS ([J])',
+    '**[Source name]** ([M new])',
+    '- [one-line summary] [link]',
+    '',
+    '## NO ACTIVITY ([L sources])',
+    '[Source names, comma separated]',
+    '',
+    '---',
+    '',
+    'When you have produced the full markdown briefing, copy the entire markdown text. Joel will paste it into the dashboard. Do not attempt to POST to any URL — the dashboard handles storage.',
+    '',
+    'Begin by opening the first source URL.'
+  ].join('\n');
+}
 
 const LOGS_KEY = 'ec_monitor_logs_v2';
 
@@ -2017,15 +2455,16 @@ function getStatusForAccount(id) {
 }
 
 function relClass(rel) {
-  if (rel === 'Grantee') return 'rel-grantee';
-  if (rel === 'EC Leadership') return 'rel-ec';
-  if (rel === 'CCAI') return 'rel-ccai';
-  if (rel === 'Key/Potential') return 'rel-key';
+  if (rel === 'grantee') return 'rel-grantee';
+  if (rel === 'funder')  return 'rel-ec';
+  if (rel === 'person')  return 'rel-ccai';
   return 'rel-pub';
 }
 
 function relShort(rel) {
-  if (rel === 'EC Leadership') return 'EC Leadership';
+  if (rel === 'grantee') return 'Grantee';
+  if (rel === 'funder')  return 'Funder';
+  if (rel === 'person')  return 'Person';
   return rel;
 }
 
@@ -2074,131 +2513,151 @@ function filterAccounts(rel, btn) {
 }
 
 // ══════════════════════════════════════════════════════════
-// MORNING SCAN ENGINE
+// MORNING SCAN — clipboard-prompt → extension → markdown brief
 // ══════════════════════════════════════════════════════════
 
-async function startScan(mode) {
-  const panel = document.getElementById('scan-panel');
-  panel.style.display = '';
-  launchReview(mode);
-  await loadScanQueue();
+const MONITOR_API = '/.netlify/functions/monitor';
+let monitorState = { lastSeenState: {}, briefs: [] };
+
+async function loadMonitorState() {
+  try {
+    const res = await fetch(MONITOR_API);
+    if (!res.ok) throw new Error('GET ' + res.status);
+    monitorState = await res.json();
+  } catch (e) {
+    console.error('Monitor GET error:', e);
+    monitorState = { lastSeenState: {}, briefs: [] };
+  }
+  return monitorState;
 }
 
-// Honest launcher: open monitored pages in tabs for a manual review sweep.
-// No scraping, no automation — just gets you to the posts fast.
-function launchReview(mode) {
-  const today = todayStr();
-  const logs = getLogs();
-  let targets;
-  if (mode === 'quick') {
-    const checkedToday = new Set(logs.filter(l => l.date === today).map(l => l.accountId));
-    targets = ACCOUNTS.filter(a => a.linkedin && !checkedToday.has(a.id));
-  } else {
-    targets = ACCOUNTS.filter(a => a.linkedin);
-  }
-  if (!targets.length) {
-    toast(mode === 'quick' ? 'All accounts already checked today.' : 'No LinkedIn URLs on file.');
+async function runMorningScan() {
+  await loadMonitorState();
+  const prompt = buildScanPrompt(monitorState.lastSeenState);
+  try {
+    await navigator.clipboard.writeText(prompt);
+  } catch (e) {
+    console.error('Clipboard write failed:', e);
+    alert('Could not copy to clipboard. Browser may have blocked clipboard access.');
     return;
   }
-  if (!confirm('Open ' + targets.length + ' monitored pages in new tabs for review?')) return;
-  targets.forEach((a, i) => setTimeout(() => window.open(a.linkedin, '_blank', 'noopener'), i * 400));
+  document.getElementById('scan-panel').style.display = '';
+  document.getElementById('scan-brief-input').value = '';
+  document.getElementById('scan-submit-status').textContent = '';
 }
 
-// ── Store I/O (all reads/writes go through the scan-store function) ──
-const SCAN_API = '/.netlify/functions/scan-store';
+async function saveBrief() {
+  const ta = document.getElementById('scan-brief-input');
+  const status = document.getElementById('scan-submit-status');
+  const markdown = ta.value.trim();
+  if (!markdown) {
+    status.style.color = 'var(--orange)';
+    status.textContent = 'Paste a brief first.';
+    return;
+  }
 
-async function scanApi(method, params, body) {
-  const qs = params ? '?' + new URLSearchParams(params).toString() : '';
-  const opts = { method: method, headers: { 'content-type': 'application/json' } };
-  if (body) opts.body = JSON.stringify(body);
-  const res = await fetch(SCAN_API + qs, opts);
-  if (!res.ok) throw new Error('scan-store ' + res.status);
-  return res.json();
-}
+  status.style.color = 'var(--gray-400)';
+  status.textContent = 'Saving…';
 
-async function loadScanQueue() {
-  const results = document.getElementById('scan-results');
-  const timestamp = document.getElementById('scan-timestamp');
-  results.innerHTML = '<div style="color:#888;font-size:0.85rem;">Loading today\u2019s review queue\u2026</div>';
+  const createdAt = new Date().toISOString();
+  const earliestSeen = Object.values(monitorState.lastSeenState).sort()[0];
+  const brief = {
+    id: 'brief-' + createdAt.replace(/[:.]/g, '-'),
+    createdAt: createdAt,
+    windowStart: earliestSeen || null,
+    markdown: markdown
+  };
+  const sourceIds = MONITOR_SOURCES.map(function(s) { return s.id; });
+
   try {
-    const data = await scanApi('GET', { type: 'discovered_posts', date: todayStr() });
-    renderScanQueue(data.records || []);
-    timestamp.textContent = 'Updated ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const res = await fetch(MONITOR_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'brief', data: brief, sourceIds: sourceIds })
+    });
+    if (!res.ok) throw new Error('POST ' + res.status);
+    await res.json();
+    status.style.color = 'var(--teal-dk)';
+    status.textContent = 'Saved.';
+    ta.value = '';
+    setTimeout(function() {
+      document.getElementById('scan-panel').style.display = 'none';
+    }, 800);
+    await loadLatestBrief();
   } catch (e) {
-    results.innerHTML = '<div style="color:#cc4444;font-size:0.85rem;">Could not reach the store (' + e.message + '). This works on the deployed site once scan-store is live.</div>';
+    console.error('Save brief error:', e);
+    status.style.color = 'var(--orange)';
+    status.textContent = 'Save failed: ' + e.message;
   }
 }
 
-function renderScanQueue(posts) {
-  const results = document.getElementById('scan-results');
-  const acctName = function (id) { return (ACCOUNTS.find(a => a.id === id) || {}).name || id || 'Unattributed'; };
-  let html = '<div style="display:flex;justify-content:flex-end;margin-bottom:8px;">'
-    + '<button class="monitor-btn monitor-btn-quick" onclick="showCaptureForm()">+ Save candidate</button></div>'
-    + '<div id="scan-capture"></div>';
-  if (!posts.length) {
-    html += '<div style="color:#888;font-size:0.85rem;padding:4px 0;">No candidates captured yet today. Run a review sweep, then use \u201c+ Save candidate\u201d to log anything worth acting on.</div>';
+function renderMarkdown(md) {
+  if (typeof marked === 'undefined') {
+    const escaped = md.replace(/[&<>]/g, function(c) { return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; });
+    return '<pre style="white-space:pre-wrap;">' + escaped + '</pre>';
+  }
+  return marked.parse(md);
+}
+
+function formatBriefTimestamp(iso) {
+  try {
+    return new Date(iso).toLocaleString('en-US', { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' });
+  } catch (e) { return iso; }
+}
+
+async function loadLatestBrief() {
+  await loadMonitorState();
+  const body = document.getElementById('latest-brief-body');
+  const when = document.getElementById('latest-brief-when');
+  const archive = document.getElementById('latest-brief-archive');
+  if (!body) return;
+
+  const briefs = monitorState.briefs || [];
+  if (!briefs.length) {
+    body.innerHTML = '<div style="color:var(--gray-400);font-size:0.78rem;">No brief yet. Click Run Morning Scan to generate one.</div>';
+    when.textContent = '';
+    archive.style.display = 'none';
+    return;
+  }
+
+  const latest = briefs[0];
+  body.innerHTML = renderMarkdown(latest.markdown);
+  when.textContent = '— ' + formatBriefTimestamp(latest.createdAt);
+  archive.style.display = briefs.length > 1 ? '' : 'none';
+}
+
+function openBriefArchive() {
+  const list = document.getElementById('brief-archive-list');
+  const briefs = monitorState.briefs || [];
+  if (!briefs.length) {
+    list.innerHTML = '<div style="color:var(--gray-400);font-size:0.85rem;padding:12px;">No briefs in archive.</div>';
   } else {
-    html += posts.map(function (p) {
-      return '<div style="border:1px solid var(--mist);border-radius:8px;padding:10px;margin-bottom:8px;">'
-        + '<div style="display:flex;justify-content:space-between;gap:8px;align-items:center;">'
-        + '<a href="' + p.url + '" target="_blank" rel="noopener" style="color:var(--teal-dk);font-weight:600;font-size:0.85rem;text-decoration:none;">' + acctName(p.accountId) + ' \u2197</a>'
-        + '<span style="font-size:0.7rem;color:var(--gray-400);white-space:nowrap;">' + (p.disposition || 'monitor') + ' \u00b7 ' + (p.status || 'new') + '</span></div>'
-        + (p.note ? '<div style="font-size:0.8rem;color:var(--ink);margin-top:4px;">' + scanEsc(p.note) + '</div>' : '')
+    list.innerHTML = briefs.map(function(b, i) {
+      return '<div style="border:1px solid var(--mist);border-radius:6px;margin-bottom:8px;overflow:hidden;">'
+        + '<div onclick="toggleArchiveRow(' + i + ')" style="padding:10px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:var(--fog);">'
+        +   '<strong style="font-family:var(--font-emph);font-size:0.85rem;color:var(--teal-dk);">' + formatBriefTimestamp(b.createdAt) + '</strong>'
+        +   '<span style="font-size:0.75rem;color:var(--gray-400);">' + (i === 0 ? 'Latest' : '#' + (i + 1)) + '</span>'
+        + '</div>'
+        + '<div id="archive-body-' + i + '" style="display:none;padding:14px;font-size:0.82rem;line-height:1.6;color:var(--ink);border-top:1px solid var(--mist);"></div>'
         + '</div>';
     }).join('');
   }
-  results.innerHTML = html;
+  document.getElementById('brief-archive-overlay').style.display = 'flex';
 }
 
-function showCaptureForm() {
-  const wrap = document.getElementById('scan-capture');
-  if (!wrap) return;
-  const opts = ACCOUNTS.map(function (a) { return '<option value="' + a.id + '">' + a.name + '</option>'; }).join('');
-  wrap.innerHTML =
-    '<div style="border:1px dashed var(--orange);border-radius:8px;padding:10px;margin-bottom:10px;display:flex;flex-direction:column;gap:6px;">'
-    + '<input id="cap-url" placeholder="Post URL" style="padding:6px;border:1px solid var(--mist);border-radius:6px;font-size:0.8rem;">'
-    + '<select id="cap-account" style="padding:6px;border:1px solid var(--mist);border-radius:6px;font-size:0.8rem;"><option value="">\u2014 account \u2014</option>' + opts + '</select>'
-    + '<div style="display:flex;gap:6px;">'
-    + '<select id="cap-lane" style="flex:1;padding:6px;border:1px solid var(--mist);border-radius:6px;font-size:0.8rem;"><option value="lane1">Lane 1 \u2014 grantees</option><option value="lane2">Lane 2 \u2014 systems</option></select>'
-    + '<select id="cap-disp" style="flex:1;padding:6px;border:1px solid var(--mist);border-radius:6px;font-size:0.8rem;"><option value="monitor">monitor</option><option value="comment">comment</option><option value="repost">repost</option><option value="original">original</option><option value="carousel">carousel</option></select>'
-    + '</div>'
-    + '<textarea id="cap-note" placeholder="Why it matters (optional)" rows="2" style="padding:6px;border:1px solid var(--mist);border-radius:6px;font-size:0.8rem;resize:vertical;"></textarea>'
-    + '<div style="display:flex;gap:6px;"><button class="monitor-btn monitor-btn-scan" onclick="saveCandidate()">Save</button>'
-    + '<button class="monitor-btn" onclick="document.getElementById(\'scan-capture\').innerHTML=\'\'">Cancel</button></div>'
-    + '</div>';
+function closeBriefArchive() {
+  document.getElementById('brief-archive-overlay').style.display = 'none';
 }
 
-async function saveCandidate() {
-  const url = (document.getElementById('cap-url').value || '').trim();
-  if (!url) { toast('Add a post URL first.'); return; }
-  const record = {
-    accountId: document.getElementById('cap-account').value || null,
-    platform: 'linkedin',
-    url: url,
-    capturedVia: 'manual',
-    ingestionQuality: 'url_only',
-    lane: document.getElementById('cap-lane').value,
-    disposition: document.getElementById('cap-disp').value,
-    note: document.getElementById('cap-note').value || '',
-    status: 'new'
-  };
-  try {
-    await scanApi('POST', null, { type: 'discovered_posts', record: record });
-    toast('Candidate saved.');
-    await loadScanQueue();
-  } catch (e) {
-    toast('Save failed: ' + e.message);
+function toggleArchiveRow(i) {
+  const body = document.getElementById('archive-body-' + i);
+  if (body.style.display === 'none') {
+    body.innerHTML = renderMarkdown(monitorState.briefs[i].markdown);
+    body.style.display = '';
+  } else {
+    body.style.display = 'none';
   }
 }
-
-function scanEsc(s) {
-  return String(s).replace(/[&<>"']/g, function (c) {
-    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-  });
-}
-
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
 
 // ── CONTENT CALENDAR PREVIEW ──
 const CALENDAR_EVENTS = [
@@ -2705,12 +3164,11 @@ function escHtml(str) {
 
 // Init Ideation on load
 (function initIdeation() {
-  const savedDrive = localStorage.getItem(DRIVE_KEY);
-  if (savedDrive) {
-    const inp = document.getElementById('drive-url-input');
-    if (inp) inp.value = savedDrive;
-    loadDriveEmbed(savedDrive);
-  }
+  var EC_IDEATION_DEFAULT = 'https://drive.google.com/embeddedfolderview?id=1UZ0r3ohAd7bCrCv9Mz0xaYBEAFgiW9RI#list';
+  var savedDrive = localStorage.getItem(DRIVE_KEY) || EC_IDEATION_DEFAULT;
+  var inp = document.getElementById('drive-url-input');
+  if (inp && !inp.value) inp.value = 'https://drive.google.com/drive/folders/1UZ0r3ohAd7bCrCv9Mz0xaYBEAFgiW9RI?usp=sharing';
+  loadDriveEmbed(savedDrive);
   renderInspirationGrid('all');
   renderDraftsGrid();
 })();
@@ -2723,6 +3181,335 @@ document.getElementById('met-imp').textContent = '321K';
 document.getElementById('met-eng').textContent = '7.3%';
 document.getElementById('met-fol').textContent = '820';
 document.getElementById('met-clk') && (document.getElementById('met-clk').textContent = '205');
+
+// ── CONTENT CALENDAR ──
+// CAL_EVENTS removed — Netlify Blobs is the single source of truth.
+// All events live in /.netlify/functions/calendar (Blobs store).
+// Add/edit/delete via the calendar UI.
+
+const CAT_CLASS = {
+  "Global Observance":       "cat-global",
+  "Policy Moment":           "cat-policy",
+  "Energy Industry Event":   "cat-industry",
+  "Development / NGO Event": "cat-ngo"
+};
+
+const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const DAY_NAMES   = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth() + 1; // 1-based
+let calActiveFilter = 'all';
+let calEditingId = null; // null = adding new, number = editing existing
+
+// ── Calendar API (Netlify Blobs via Function) ──
+const CAL_API = '/.netlify/functions/calendar';
+let calAllEvents = null; // cached events
+
+async function calLoadEvents() {
+  try {
+    const res = await fetch(CAL_API);
+    const data = await res.json();
+    calAllEvents = Array.isArray(data) ? data : [];
+  } catch(e) {
+    console.warn('Calendar load failed', e);
+    calAllEvents = [];
+  }
+  renderCal();
+}
+
+async function calPersistEvents() {
+  try {
+    await fetch(CAL_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(calAllEvents)
+    });
+  } catch(e) { console.warn('Calendar save failed', e); }
+}
+
+function calGetEvents() {
+  return calAllEvents || [];
+}
+
+function calSaveCustomEvents(events) {
+  calAllEvents = events;
+  calPersistEvents();
+}
+
+function calOpenAdd() {
+  calEditingId = null;
+  document.getElementById('cal-modal-title').textContent = 'Add Event';
+  document.getElementById('cal-form-month').value = calMonth;
+  document.getElementById('cal-form-day').value = '';
+  document.getElementById('cal-form-title').value = '';
+  document.getElementById('cal-form-cat').value = 'Global Observance';
+  document.getElementById('cal-form-angle').value = '';
+  document.getElementById('cal-form-notes').value = '';
+  document.getElementById('cal-form-vary').checked = false;
+  document.getElementById('cal-detail').style.display = 'none';
+  const overlay = document.getElementById('cal-modal-overlay');
+  overlay.style.display = 'flex';
+}
+
+function calOpenEdit() {
+  const events = calGetEvents();
+  const ev = events.find(e => e.id === calEditingId);
+  if (!ev) return;
+  document.getElementById('cal-modal-title').textContent = 'Edit Event';
+  document.getElementById('cal-form-month').value = ev.month;
+  document.getElementById('cal-form-day').value = ev.day;
+  document.getElementById('cal-form-title').value = ev.title;
+  document.getElementById('cal-form-cat').value = ev.category;
+  document.getElementById('cal-form-angle').value = ev.angle;
+  document.getElementById('cal-form-notes').value = ev.notes;
+  document.getElementById('cal-form-vary').checked = !!ev.vary;
+  document.getElementById('cal-detail').style.display = 'none';
+  const overlay = document.getElementById('cal-modal-overlay');
+  overlay.style.display = 'flex';
+}
+
+function calCloseModal() {
+  document.getElementById('cal-modal-overlay').style.display = 'none';
+}
+
+function calSaveEvent() {
+  const month = parseInt(document.getElementById('cal-form-month').value);
+  const day   = parseInt(document.getElementById('cal-form-day').value);
+  const title = document.getElementById('cal-form-title').value.trim();
+  const cat   = document.getElementById('cal-form-cat').value;
+  const angle = document.getElementById('cal-form-angle').value.trim();
+  const notes = document.getElementById('cal-form-notes').value.trim();
+  const vary  = document.getElementById('cal-form-vary').checked;
+
+  if (!title || !day || day < 1 || day > 31) {
+    alert('Please enter a valid title and day.');
+    return;
+  }
+
+  let allEvents = calGetEvents();
+
+  if (calEditingId !== null) {
+    // Editing existing
+    const idx = allEvents.findIndex(e => e.id === calEditingId);
+    if (idx !== -1) {
+      allEvents[idx] = { ...allEvents[idx], month, day, title, category: cat, angle, notes, vary };
+    }
+  } else {
+    // Adding new
+    const newEvent = { month, day, title, category: cat, angle, notes, vary, isCustom: true, id: 'c_' + Date.now() };
+    allEvents.push(newEvent);
+  }
+
+  calSaveCustomEvents(allEvents);
+  calCloseModal();
+  renderCal();
+}
+
+function calDeleteEvent() {
+  if (!confirm('Delete this event?')) return;
+  let allEvents = calGetEvents();
+  allEvents = allEvents.filter(e => e.id !== calEditingId);
+  calSaveCustomEvents(allEvents);
+  document.getElementById('cal-detail').style.display = 'none';
+  renderCal();
+}
+
+function calCatClass(cat) { return CAT_CLASS[cat] || "cat-strategic"; }
+
+function calFilter(cat) {
+  calActiveFilter = cat;
+  document.querySelectorAll('.cal-filter-btn').forEach(b => b.classList.remove('active-filter'));
+  const id = cat === 'all' ? 'filter-all' : 'filter-' + cat;
+  const btn = document.getElementById(id);
+  if (btn) btn.classList.add('active-filter');
+  renderCal();
+}
+
+function calNav(dir) { 
+  calMonth += dir; 
+  if (calMonth > 12) { calMonth = 1; calYear++; }
+  if (calMonth < 1)  { calMonth = 12; calYear--; }
+  renderCal(); 
+}
+
+function calToday() { 
+  calMonth = new Date().getMonth() + 1; 
+  calYear = new Date().getFullYear(); 
+  renderCal(); 
+}
+
+function showCalDetail(ev) {
+  calEditingId = ev.id;
+  const d = document.getElementById('cal-detail');
+  document.getElementById('cal-detail-date').textContent = (ev.vary ? "~" : "") + MONTH_NAMES[ev.month-1] + " " + ev.day + ", " + calYear + (ev.vary ? " (approximate)" : "");
+  document.getElementById('cal-detail-title').textContent = ev.title;
+  const catEl = document.getElementById('cal-detail-cat');
+  catEl.textContent = ev.category;
+  catEl.className = '';
+  catEl.style.cssText = 'display:inline-block;font-size:11px;padding:3px 10px;border-radius:20px;color:#fff;margin-bottom:12px;';
+  catEl.classList.add(calCatClass(ev.category));
+  document.getElementById('cal-detail-angle').innerHTML = '<strong>Strategic Angle:</strong> ' + ev.angle;
+  document.getElementById('cal-detail-notes').innerHTML = '<strong>Notes:</strong> ' + ev.notes;
+  d.style.display = 'block';
+}
+
+// ── Date resolver for floating events ──
+// Returns the correct day-of-month for a given year for events that
+// follow a rule (e.g. Earth Hour = last Saturday of March).
+// For everything else, returns event.day as-is.
+function resolveEventDay(event, year) {
+  if (event.title === "Earth Hour") {
+    // Last Saturday of March
+    return lastWeekdayOfMonth(year, 3, 6); // March, Saturday
+  }
+  return event.day;
+}
+
+function lastWeekdayOfMonth(year, month, weekday) {
+  // month: 1-12, weekday: 0=Sun..6=Sat
+  const lastDay = new Date(year, month, 0).getDate();
+  const lastDate = new Date(year, month - 1, lastDay);
+  const offset = (lastDate.getDay() - weekday + 7) % 7;
+  return lastDay - offset;
+}
+
+// ── What's Coming Up panel ──
+function calShowUpcoming(daysAhead) {
+  daysAhead = daysAhead || 45;
+  const events = calGetEvents();
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const upcoming = [];
+
+  events.forEach(function(e) {
+    // Resolve next occurrence of this event from today forward
+    var year = today.getFullYear();
+    var day  = resolveEventDay(e, year);
+    var date = new Date(year, e.month - 1, day);
+    if (date < today) {
+      year = year + 1;
+      day  = resolveEventDay(e, year);
+      date = new Date(year, e.month - 1, day);
+    }
+    const diffDays = Math.round((date - today) / 86400000);
+    if (diffDays <= daysAhead) {
+      upcoming.push(Object.assign({}, e, { resolvedDate: date, daysOut: diffDays }));
+    }
+  });
+
+  upcoming.sort(function(a, b) { return a.resolvedDate - b.resolvedDate; });
+
+  const list = document.getElementById('cal-upcoming-list');
+  if (upcoming.length === 0) {
+    list.innerHTML = '<div style="font-family:var(--font-body);color:#666;padding:8px 0;">No events in the next ' + daysAhead + ' days.</div>';
+  } else {
+    list.innerHTML = upcoming.map(function(e) {
+      const d = e.resolvedDate;
+      const dateStr = MONTH_NAMES[d.getMonth()].slice(0,3) + ' ' + d.getDate();
+      const whenStr = e.daysOut === 0 ? 'today'
+                    : e.daysOut === 1 ? 'tomorrow'
+                    : 'in ' + e.daysOut + ' days';
+      const catClass = calCatClass(e.category);
+      return '<div style="padding:14px 0;border-bottom:1px solid var(--mist);">'
+        + '<div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">'
+        +   '<div style="font-family:var(--font-emph);font-size:13px;color:var(--orange);min-width:70px;">' + dateStr + '</div>'
+        +   '<div style="font-family:var(--font-body);font-size:12px;color:#888;">' + whenStr + '</div>'
+        +   '<span style="display:inline-block;font-size:11px;padding:2px 10px;border-radius:20px;color:#fff;" class="' + catClass + '">' + e.category + '</span>'
+        + '</div>'
+        + '<div style="font-family:var(--font-emph);font-size:15px;color:var(--teal-dk);margin-bottom:4px;">' + e.title + '</div>'
+        + (e.angle ? '<div style="font-family:var(--font-body);font-size:13px;color:var(--ink);margin-bottom:2px;">' + e.angle + '</div>' : '')
+        + (e.notes ? '<div style="font-family:var(--font-body);font-size:12px;color:#666;">' + e.notes + '</div>' : '')
+        + '</div>';
+    }).join('');
+  }
+
+  document.getElementById('cal-upcoming').style.display = 'block';
+  document.getElementById('cal-detail').style.display = 'none';
+  document.getElementById('cal-upcoming').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderCal() {
+  const label = document.getElementById('cal-month-label');
+  if (!label) return;
+  label.textContent = MONTH_NAMES[calMonth-1] + ' ' + calYear;
+
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+
+  // Day headers
+  DAY_NAMES.forEach(d => {
+    const h = document.createElement('div');
+    h.className = 'cal-day-header';
+    h.textContent = d;
+    grid.appendChild(h);
+  });
+
+  const firstDay = new Date(calYear, calMonth-1, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth, 0).getDate();
+  const daysInPrev  = new Date(calYear, calMonth-1, 0).getDate();
+  const today = new Date();
+
+  // Filter events for this month
+  const allEvs = calGetEvents();
+  const monthEvents = allEvs.filter(e => {
+    if (calActiveFilter !== 'all' && e.category !== calActiveFilter) return false;
+    return e.month === calMonth;
+  });
+
+  // Build day cells
+  const totalCells = Math.ceil((firstDay + daysInMonth) / 7) * 7;
+  for (let i = 0; i < totalCells; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cal-day';
+    let dayNum, isCurrentMonth = true;
+
+    if (i < firstDay) {
+      dayNum = daysInPrev - firstDay + i + 1;
+      isCurrentMonth = false;
+      cell.classList.add('other-month');
+    } else if (i >= firstDay + daysInMonth) {
+      dayNum = i - firstDay - daysInMonth + 1;
+      isCurrentMonth = false;
+      cell.classList.add('other-month');
+    } else {
+      dayNum = i - firstDay + 1;
+      if (dayNum === today.getDate() && calMonth === today.getMonth()+1 && calYear === today.getFullYear()) {
+        cell.classList.add('today');
+      }
+    }
+
+    const numEl = document.createElement('div');
+    numEl.className = 'cal-day-num';
+    numEl.textContent = dayNum;
+    cell.appendChild(numEl);
+
+    if (isCurrentMonth) {
+      monthEvents.filter(e => resolveEventDay(e, calYear) === dayNum).forEach(ev => {
+        const evEl = document.createElement('div');
+        evEl.className = 'cal-event ' + calCatClass(ev.category);
+        if (ev.vary) evEl.classList.add('cal-event-var');
+        evEl.textContent = ev.title;
+        evEl.title = ev.title;
+        evEl.onclick = () => showCalDetail(ev);
+        cell.appendChild(evEl);
+      });
+    }
+
+    grid.appendChild(cell);
+  }
+}
+
+// Init calendar when page loads
+document.addEventListener('DOMContentLoaded', () => { calLoadEvents(); loadLatestBrief(); });
+
+// Also render when navigating to calendar page
+// Render calendar when navigating to it
+document.addEventListener('click', function(e) {
+  const nav = e.target.closest('[data-page="content-calendar"]');
+  if (nav) { setTimeout(renderCal, 100); }
+});
+
 </script>
 </body>
 </html>
